@@ -29,7 +29,7 @@
 #define SDL_stdinc_h_
 
 #include "SDL_config.h"
-
+#include <string.h>
 #ifdef __APPLE__
 #ifndef _DARWIN_C_SOURCE
 #define _DARWIN_C_SOURCE 1 /* for memset_pattern4() */

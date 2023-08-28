@@ -35,6 +35,10 @@
 #include <unistd.h>
 #endif
 
+#ifdef __APPLE__
+#include <ctype.h>
+#endif
+
 #ifdef _MSC_VER
 #include "i_opndir.h"
 #else

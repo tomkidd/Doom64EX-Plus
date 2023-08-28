@@ -643,6 +643,7 @@
 				AB5A80BF1A8DABE100AF539F /* Frameworks */,
 				AB5A80C01A8DABE100AF539F /* Resources */,
 				9F385F311C29C02A00BD4F2B /* CopyFiles */,
+				A1FC080E2A9ACC6B00EC8372 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -702,6 +703,26 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		A1FC080E2A9ACC6B00EC8372 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "install_name_tool -change /opt/local/lib/libz.1.dylib @executable_path/libz.1.dylib ${BUILT_PRODUCTS_DIR}/DOOM64EXPlus.app/Contents/MacOS/DOOM64EXPlus\ninstall_name_tool -change /opt/local/lib/libpng16.16.dylib @executable_path/libpng16.16.dylib ${BUILT_PRODUCTS_DIR}/DOOM64EXPlus.app/Contents/MacOS/DOOM64EXPlus\ninstall_name_tool -change /opt/local/lib/libSDL2_net-2.0.0.dylib @executable_path/libSDL2_net-2.0.0.dylib ${BUILT_PRODUCTS_DIR}/DOOM64EXPlus.app/Contents/MacOS/DOOM64EXPlus\ninstall_name_tool -change /opt/local/lib/libSDL2-2.0.0.dylib @executable_path/libSDL2-2.0.0.dylib ${BUILT_PRODUCTS_DIR}/DOOM64EXPlus.app/Contents/MacOS/DOOM64EXPlus\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		AB5A80BE1A8DABE100AF539F /* Sources */ = {
@@ -945,6 +966,7 @@
 					"$(PROJECT_DIR)/SDL2.framework/Headers",
 					"$(PROJECT_DIR)/SDL2_mixer.framework/Headers",
 					"$(PROJECT_DIR)/SDL2_image.framework/Headers",
+					"$(PROJECT_DIR)/../src/engine/3rdparty/Includes",
 				);
 				INFOPLIST_FILE = "DOOM64EX--Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "$(PRODUCT_NAME)";
@@ -986,6 +1008,7 @@
 					"$(PROJECT_DIR)/SDL2.framework/Headers",
 					"$(PROJECT_DIR)/SDL2_mixer.framework/Headers",
 					"$(PROJECT_DIR)/SDL2_image.framework/Headers",
+					"$(PROJECT_DIR)/../src/engine/3rdparty/Includes",
 				);
 				INFOPLIST_FILE = "DOOM64EX--Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = "$(PRODUCT_NAME)";
