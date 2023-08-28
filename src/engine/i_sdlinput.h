@@ -1,8 +1,10 @@
 // Emacs style mode select   -*- C++ -*-
 //-----------------------------------------------------------------------------
 //
-// Copyright(C) 2007-2012 Samuel Villarreal
-//
+// Copyright(C) 2005 Simon Howard
+// Copyright(C) 2007-2014 Samuel Villarreal
+// Copyright(C) 2022 André Guilherme 
+// 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
 // as published by the Free Software Foundation; either version 2
@@ -19,32 +21,36 @@
 // 02111-1307, USA.
 //
 //-----------------------------------------------------------------------------
-
-#ifndef __I_SWAP_H__
-#define __I_SWAP_H__
+//
+// DESCRIPTION:
+//    SDL Input
+//
+//-----------------------------------------------------------------------------
 
 #ifdef __OpenBSD__
-#include <SDL_endian.h>
+#include <SDL.h>
 #else
-#include <SDL2/SDL_endian.h>
+#include <SDL2/SDL.h>
 #endif
-
 #include "doomtype.h"
+////////////Input//////////////
 
-#define I_SwapLE16(x)   SDL_SwapLE16(x)
-#define I_SwapLE32(x)   SDL_SwapLE32(x)
-#define I_SwapBE16(x)   SDL_SwapBE16(x)
-#define I_SwapBE32(x)   SDL_SwapBE32(x)
+extern int UseMouse[2];
+extern int UseJoystick;
+extern int mouse_x;
+extern int mouse_y;
 
-#define SHORT(x)        ((int16_t)I_SwapLE16(x))
-#define LONG(x)         ((signed long)I_SwapLE32(x))
+int I_MouseAccel(int val);
+void I_MouseAccelChange(void);
 
-// Defines for checking the endianness of the system.
+void ISDL_RegisterKeyCvars(void);
 
-#if SDL_BYTEORDER == SYS_LIL_ENDIAN
-#define SYS_LITTLE_ENDIAN
-#elif SDL_BYTEORDER == SYS_BIG_ENDIAN
-#define SYS_BIG_ENDIAN
-#endif
+static void I_GetEvent(SDL_Event* Event);
+static void I_ReadMouse(void);
+static void I_InitInputs(void);
 
-#endif // __I_SWAP_H__
+void I_StartTic(void);
+void I_FinishUpdate(void);
+int I_ShutdownWait(void);
+void I_CenterMouse(void);
+dboolean I_UpdateGrab(void);

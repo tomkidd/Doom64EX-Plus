@@ -40,6 +40,7 @@
 #include "st_stuff.h"
 #include "deh_main.h"
 #include "deh_misc.h"
+#include "deh_str.h"
 
 typedef struct {
 	const int8_t* cheat;
@@ -50,6 +51,7 @@ typedef struct {
 
 static void M_CheatFa(player_t* player, int8_t dat[4]);
 static void M_CheatBerserk(player_t* player, int8_t dat[4]);
+static void M_CheatWarp(player_t* player, int8_t dat[4]);
 static void M_CheatMyPos(player_t* player, int8_t dat[4]);
 static void M_CheatAllMap(player_t* player, int8_t dat[4]);
 
@@ -58,13 +60,14 @@ cheatinfo_t cheat[] = {
 	{   "idfa",     M_CheatFa,          0   },
 	{   "idkfa",    M_CheatKfa,         0   },
 	{   "idclip",   M_CheatClip,        0   },
+	{   "idclev",   M_CheatWarp,        -2  },
 	{   "idpos",    M_CheatMyPos,       0   },
-	{   "exmap",    M_CheatAllMap,      0   },
-	{   "exrage",   M_CheatBerserk,     0   },
-	{   "exgivew",  M_CheatGiveWeapon,  -1  },
-	{   "exgivek",  M_CheatGiveKey,     -1  },
-	{   "exkill",   M_CheatBoyISuck,    0   },
-	{   "exgivea",  M_CheatArtifacts,   -1  },
+	{   "exm",		M_CheatAllMap,      0   },
+	{   "exr",		M_CheatBerserk,     0   },
+	{   "exw",		M_CheatGiveWeapon,  -1  },
+	{   "exg",		M_CheatGiveKey,     -1  },
+	{   "exk",		M_CheatBoyISuck,    0   },
+	{   "exa",		M_CheatArtifacts,   -1  },
 	{   NULL,       NULL,               0   }
 };
 
@@ -135,6 +138,36 @@ void M_CheatClip(player_t* player, int8_t dat[4]) {
 static void M_CheatBerserk(player_t* player, int8_t dat[4]) {
 	P_GivePower(player, pw_strength);
 	player->message = GOTBERSERK;
+}
+
+CVAR_EXTERNAL(sv_skill);
+static void M_CheatWarp(player_t* player, int8_t dat[4]) {
+	char	lumpname[9];
+	int		lumpnum;
+	int map;
+	map = datoi(dat);
+	gameskill = (int)sv_skill.value;
+	gamemap = nextmap = map;
+
+	if (map < 1)
+	{
+		return;
+	}
+	if (map < 10)
+	{
+		DEH_snprintf(lumpname, 9, "MAP0%i", map);
+	}
+	else {
+		DEH_snprintf(lumpname, 9, "MAP%i", map);
+	}
+	lumpnum = map ? W_GetNumForName(lumpname) : W_CheckNumForName(lumpname);
+
+	if (lumpnum)
+	{
+		// So be it.
+		G_DeferedInitNew(gameskill, map);
+		dmemset(passwordData, 0xff, 16);
+	}
 }
 
 static void M_CheatMyPos(player_t* player, int8_t dat[4]) {
@@ -225,7 +258,7 @@ void M_CheatArtifacts(player_t* player, int8_t dat[4]) {
 #define CHEAT_ARGS_MAX 8  /* Maximum number of args at end of cheats */
 
 static dboolean M_FindCheats(player_t* plyr, int key) {
-	static intptr_t sr;
+	static unsigned long sr;
 	static int8_t argbuf[CHEAT_ARGS_MAX + 1], * arg;
 	static int init, argsleft, cht;
 	int i, ret, matchedbefore;

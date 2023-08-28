@@ -51,6 +51,7 @@
 #include "doomdef.h"
 #include "m_misc.h"
 #include "i_video.h"
+#include "i_sdlinput.h"
 #include "d_net.h"
 #include "g_demo.h"
 #include "d_main.h"
@@ -84,18 +85,17 @@ CVAR(v_accessibility, 0);
 #if defined(__LINUX__) || defined(__OpenBSD__)
 #define Free(userdir)	free(userdir);
 #else
-#define Free(userdir)	SDL_free((void *)userdir);
+#define Free(userdir)	SDL_free(userdir);
 #endif
 
 
 ticcmd_t        emptycmd;
-static int32    I_GetTime_Scale = 1 << 24;
 
 //
 // I_uSleep
 //
 
-void I_Sleep(intptr_t usecs) {
+void I_Sleep(unsigned long usecs) {
 #ifdef _WIN32
 	Sleep((DWORD)usecs);
 #else
@@ -191,7 +191,7 @@ void I_EndDisplay(void) {
 //
 
 fixed_t I_GetTimeFrac(void) {
-	intptr_t now;
+	unsigned long now;
 	fixed_t frac;
 
 	now = SDL_GetTicks();
@@ -296,17 +296,17 @@ int8_t* I_FindDataFile(int8_t* file) {
 	}
 
 #ifdef __APPLE__
-	if ((dir = SDL_GetBasePath())) {
-		snprintf(path, 511, "%s%s", dir, file);
-		
-		  Free(dir);
+    if ((dir = SDL_GetBasePath())) {
+        snprintf(path, 511, "%s%s", dir, file);
+        
+          Free(dir);
 
-		if (I_FileExists(path))
-			return path;
-	}
+        if (I_FileExists(path))
+            return path;
+    }
 #endif
 
-	if ((dir = I_GetUserDir())) {
+    if ((dir = I_GetUserDir())) {
 		snprintf(path, 511, "%s%s", dir, file);
            
           Free(dir);
@@ -383,7 +383,7 @@ int I_GetTimeMS(void) {
 // I_GetRandomTimeSeed
 //
 
-intptr_t I_GetRandomTimeSeed(void) {
+unsigned long I_GetRandomTimeSeed(void) {
 	// not exactly random....
 	return SDL_GetTicks();
 }
@@ -495,7 +495,7 @@ void I_BeginRead(void) {
 // I_RegisterCvars
 //
 
-#ifdef _USE_XINPUT
+#if defined(_WIN32) && defined(USE_XINPUT)
 CVAR_EXTERNAL(i_rsticksensitivity);
 CVAR_EXTERNAL(i_rstickthreshold);
 CVAR_EXTERNAL(i_xinputscheme);
@@ -507,12 +507,11 @@ CVAR_EXTERNAL(v_vsync);
 CVAR_EXTERNAL(v_accessibility);
 
 void I_RegisterCvars(void) {
-#ifdef _USE_XINPUT
+#if defined(_WIN32) && defined(USE_XINPUT)
 	CON_CvarRegister(&i_rsticksensitivity);
 	CON_CvarRegister(&i_rstickthreshold);
 	CON_CvarRegister(&i_xinputscheme);
 #endif
-
 	CON_CvarRegister(&i_gamma);
 	CON_CvarRegister(&i_brightness);
 	CON_CvarRegister(&i_interpolateframes);

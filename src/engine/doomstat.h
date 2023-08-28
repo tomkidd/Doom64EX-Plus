@@ -81,7 +81,7 @@ extern int          deathmatch;
 extern int          video_width;
 extern int          video_height;
 extern float        video_ratio;
-extern int          window_focused;
+extern dboolean     window_focused;
 
 // -------------------------
 // Status flags for refresh.
@@ -178,7 +178,6 @@ typedef struct {
 	dboolean    clearchts;
 	dboolean    forcegodmode;
 	dboolean    contmusexit;
-	int         oldcollision;
 	int         allowjump;
 	int         allowfreelook;
 } mapdef_t;

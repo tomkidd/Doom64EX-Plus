@@ -29,6 +29,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "i_video.h"
+#include "i_sdlinput.h"
 #include "z_zone.h"
 #include "doomdef.h"
 #include "st_stuff.h"
@@ -49,9 +50,8 @@
 #include "g_actions.h"
 #include "g_controls.h"
 
-#ifdef _WIN32
+#if defined(_WIN32) && defined(USE_XINPUT)
 #include "i_xinput.h"
-#include "g_controls.h"
 #endif
 
 // automap flags
@@ -107,7 +107,7 @@ CVAR(am_overlay, 0);
 CVAR_EXTERNAL(v_msensitivityx);
 CVAR_EXTERNAL(v_msensitivityy);
 
-#ifdef _USE_XINPUT  // XINPUT
+#if defined(_WIN32) && defined(USE_XINPUT)  // XINPUT
 CVAR_EXTERNAL(i_rsticksensitivity);
 CVAR_EXTERNAL(i_xinputscheme);
 #endif
@@ -146,7 +146,7 @@ static CMD(AutomapSetFlag) {
 	}
 
 	if (data & PCKF_UP) {
-		int64 flags = (data ^ PCKF_UP);
+		int64_t flags = (data ^ PCKF_UP);
 
 		am_flags &= ~flags;
 
@@ -344,7 +344,7 @@ dboolean AM_Responder(event_t* ev) {
 			}
 		}
 	}
-#ifdef _USE_XINPUT  // XINPUT
+#if defined(_WIN32) && defined(USE_XINPUT)  // XINPUT
 
 	else if (ev->type == ev_gamepad) {
 		//
@@ -505,7 +505,7 @@ void AM_Ticker(void) {
 		}
 	}
 
-#ifdef _USE_XINPUT  // XINPUT
+#if defined(_WIN32) && defined(USE_XINPUT)  // XINPUT
 
 	if (am_flags & AF_PANGAMEPAD) {
 		automappanx += mpanx;
