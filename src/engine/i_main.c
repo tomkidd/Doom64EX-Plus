@@ -500,11 +500,7 @@ int dsnprintf(int8_t* src, size_t n, const int8_t* str, ...) {
 // main
 //
 
-#ifdef __APPLE__
 int main(int argc, char *argv[]) {
-#else
-int main(int argc, int8_t *argv[]) {
-#endif
 	myargc = argc;
 	myargv = argv;
 
