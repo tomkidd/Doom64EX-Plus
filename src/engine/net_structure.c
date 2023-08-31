@@ -1,4 +1,4 @@
-// Emacs style mode select   -*- C++ -*-
+// Emacs style mode select   -*- C -*-
 //-----------------------------------------------------------------------------
 //
 // Copyright(C) 2005 Simon Howard
@@ -20,6 +20,7 @@
 //
 // Reading and writing various structures into packets
 //
+//--------------------------------------------------------------------------------
 
 #include <stdlib.h>
 #include <string.h>
@@ -27,7 +28,7 @@
 #include "doomdef.h"
 
 #include "net_packet.h"
-#include "net_structrw.h"
+#include "net_structure.h"
 
 void NET_WriteSettings(net_packet_t* packet, net_gamesettings_t* settings)
 {

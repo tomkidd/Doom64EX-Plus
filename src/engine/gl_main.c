@@ -1,4 +1,4 @@
-// Emacs style mode select   -*- C++ -*-
+// Emacs style mode select   -*- C -*-
 //-----------------------------------------------------------------------------
 //
 // Copyright(C) 2007-2012 Samuel Villarreal
@@ -511,9 +511,6 @@ static void CalcViewSize(void) {
 }
 
 //
-// GL_Init
-//
-
 void GL_Init(void) {
 
 	gl_vendor = dglGetString(GL_VENDOR);
