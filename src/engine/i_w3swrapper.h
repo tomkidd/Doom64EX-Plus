@@ -59,10 +59,14 @@ typedef UINT8  w3suint8_t;
 typedef UINT16 w3suint16_t;
 typedef UINT64 w3suint64_t;
 #endif
-#else
+#elif defined(USE_STDINT)
 typedef uint8_t  w3suint8_t;
 typedef uint16_t w3suint16_t;
 typedef uint64_t w3suint64_t;
+#else
+typedef unsigned char w3suint8_t;
+typedef unsigned short w3suint16_t;
+typedef unsigned long long w3suint64_t;
 #endif 
 
 typedef w3suint8_t  byte;
