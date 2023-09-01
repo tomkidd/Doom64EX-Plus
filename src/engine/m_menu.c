@@ -27,7 +27,10 @@
 //
 //-----------------------------------------------------------------------------
 
+#ifndef C89
 #include <stdbool.h>
+#endif
+#include "i_w3swrapper.h"
 
 #ifdef _WIN32
 #include <io.h>
@@ -764,7 +767,7 @@ void M_DrawNetwork(void);
 
 CVAR_EXTERNAL(m_playername);
 CVAR_EXTERNAL(p_allowjump);
-CVAR_EXTERNAL(p_autoaim);
+//André: remove autoaim and use the normal aim instead.  CVAR_EXTERNAL(p_autoaim);
 CVAR_EXTERNAL(sv_nomonsters);
 CVAR_EXTERNAL(sv_fastmonsters);
 CVAR_EXTERNAL(sv_respawnitems);
@@ -781,7 +784,6 @@ enum {
 	network_friendlyfire,
 	network_keepitems,
 	network_allowjump,
-	network_allowautoaim,
 	network_header3,
 	network_nomonsters,
 	network_fastmonsters,
@@ -815,7 +817,6 @@ menudefault_t NetworkDefault[] = {
 	{ &sv_friendlyfire, 0 },
 	{ &sv_keepitems, 0 },
 	{ &p_allowjump, 0 },
-	{ &p_autoaim, 1 },
 	{ &sv_nomonsters, 0 },
 	{ &sv_fastmonsters, 0 },
 	{ &sv_respawn, 0 },
@@ -838,7 +839,7 @@ int8_t* NetworkHints[network_end] = {
 	"monsters will respawn after death",
 	"items will respawn after pickup",
 	NULL,
-	NULL
+//	NULL
 };
 
 menu_t NetworkDef = {
@@ -881,9 +882,6 @@ void M_NetworkChoice(int choice) {
 		break;
 	case network_allowjump:
 		M_SetOptionValue(choice, 0, 1, 1, &p_allowjump);
-		break;
-	case network_allowautoaim:
-		M_SetOptionValue(choice, 0, 1, 1, &p_autoaim);
 		break;
 	case network_nomonsters:
 		M_SetOptionValue(choice, 0, 1, 1, &sv_nomonsters);
@@ -936,7 +934,6 @@ void M_DrawNetwork(void) {
 	DRAWNETWORKITEM(network_friendlyfire, sv_friendlyfire.value, msgNames);
 	DRAWNETWORKITEM(network_keepitems, sv_keepitems.value, msgNames);
 	DRAWNETWORKITEM(network_allowjump, p_allowjump.value, msgNames);
-	DRAWNETWORKITEM(network_allowautoaim, p_autoaim.value, msgNames);
 	DRAWNETWORKITEM(network_nomonsters, sv_nomonsters.value, msgNames);
 	DRAWNETWORKITEM(network_fastmonsters, sv_fastmonsters.value, msgNames);
 	DRAWNETWORKITEM(network_respawnmonsters, sv_respawn.value, msgNames);
@@ -990,7 +987,6 @@ enum {
 	misc_cursorsize,
 	misc_empty2,
 	misc_header2,
-	misc_aim,
 	misc_jump,
 	misc_autorun,
 	misc_context,
@@ -1070,14 +1066,13 @@ int8_t* MiscHints[misc_end] = {
 	"emulate infinite height bug for all solid actors",
 	"disable the secret message text",
 	NULL,
-	NULL
+	//NULL
 };
 
 menudefault_t MiscDefault[] = {
 	{ &m_menufadetime, 0 },
 	{ &m_menumouse, 1 },
 	{ &m_cursorscale, 8 },
-	{ &p_autoaim, 1 },
 	{ &p_allowjump, 0 },
 	{ &p_autorun, 1 },
 	{ &p_usecontext, 0 },
@@ -1167,10 +1162,6 @@ void M_MiscChoice(int choice) {
 		M_SetOptionValue(choice, 0, 1, 1, &m_menumouse);
 		break;
 
-	case misc_aim:
-		M_SetOptionValue(choice, 0, 1, 1, &p_autoaim);
-		break;
-
 	case misc_jump:
 		M_SetOptionValue(choice, 0, 1, 1, &p_allowjump);
 		break;
@@ -1258,7 +1249,6 @@ void M_DrawMisc(void) {
     }
 
 	DRAWMISCITEM(misc_menumouse, m_menumouse.value, msgNames);
-	DRAWMISCITEM(misc_aim, p_autoaim.value, msgNames);
 	DRAWMISCITEM(misc_jump, p_allowjump.value, msgNames);
 	DRAWMISCITEM(misc_context, p_usecontext.value, mapdisplaytype);
 	DRAWMISCITEM(misc_wipe, r_wipe.value, msgNames);
@@ -3298,23 +3288,14 @@ void M_ReadSaveStrings(void) {
 		// sprintf(name, SAVEGAMENAME"%d.dsg", i);
 
 		// handle = open(name, O_RDONLY | 0, 0666);
-#ifdef _WIN32
-		handle = _open(P_GetSaveGameName(i), O_RDONLY | 0, 0666);
-#else
-		handle = open(P_GetSaveGameName(i), O_RDONLY | 0, 0666);
-#endif
+		handle = w3sopen(P_GetSaveGameName(i), O_RDONLY | 0, 0666);
 		if (handle == -1) {
 			dstrcpy(&savegamestrings[i][0], EMPTYSTRING);
 			DoomLoadMenu[i].status = 0;
 			continue;
 		}
-#ifdef _WIN32
-		_read(handle, &savegamestrings[i], MENUSTRINGSIZE);
-		_close(handle);
-#else
-		read(handle, &savegamestrings[i], MENUSTRINGSIZE);
-		close(handle);
-#endif
+		w3sread(handle, &savegamestrings[i], MENUSTRINGSIZE);
+		w3sclose(handle);
 		DoomLoadMenu[i].status = 1;
 	}
 }
