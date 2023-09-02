@@ -27,6 +27,8 @@
 #include "d_keywds.h"
 #ifdef USE_FIXEDPTC
 #include <fixedptc.h>
+#else
+#include "i_w3swrapper.h"
 #endif
 #ifdef __GNUG__
 #pragma interface
@@ -40,7 +42,7 @@ typedef fixedpt fixed_t;
 #elif __APPLE__
 typedef int fixed_t;
 #else
-typedef uint32_t fixed_t;
+typedef w3suint64_t fixed_t;
 #endif
 #define FRACBITS        16
 #define FRACUNIT        (1<<FRACBITS)

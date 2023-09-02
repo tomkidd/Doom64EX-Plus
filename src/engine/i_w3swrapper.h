@@ -25,6 +25,10 @@
 #error "Ogl must be included before of i_w3swrapper.h"
 #endif
 
+#ifdef USE_STDINT 
+#include <stdint.h>
+#endif
+
 #ifdef OLD_MSVC
 #define W32GetVersionEX(lpVersionInformation) GetVersionEx(lpVersionInformation)
 #else
