@@ -1,7 +1,7 @@
 // Emacs style mode select   -*- C -*-
 //-----------------------------------------------------------------------------
 //
-// Copyright(C) 2022 André Guilherme
+// Copyright(C) 2022 Andrï¿½ Guilherme
 //
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -24,15 +24,18 @@
 #define __GL_SHADER__H
 
 #include "doomtype.h"
-#ifdef _WIN32
-#include <glew.h>
-#endif
 #ifdef __APPLE__ 
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
 #elif defined SWITCH
 #include <GL/gl.h>
 #include <GL/glext.h>
+#elif defined _WIN32
+#include <glew.h>
+#include <GL/glu.h>
+#include <GL/gl.h>
+#elif defined(VITA)
+#include <vitaGL.h>
 #else
 #include <GL/glu.h>
 #include <GL/gl.h>

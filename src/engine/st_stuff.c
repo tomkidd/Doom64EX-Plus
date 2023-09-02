@@ -65,6 +65,7 @@ CVAR(m_messages, 1);
 CVAR(m_playername, Player);
 CVAR(st_showpendingweapon, 1);
 CVAR(st_showstats, 0);
+CVAR(st_hud_color, 0);
 
 CVAR_EXTERNAL(p_usecontext);
 CVAR_EXTERNAL(p_damageindicator);
@@ -277,16 +278,16 @@ static void ST_DrawDamageMarkers(void) {
 			R_PointToAngle2(dmgmarker->source->x, dmgmarker->source->y,
 				p->mo->x, p->mo->y));
 
-		dglPushMatrix();
-		dglTranslatef(160, 120, 0);
-		dglRotatef(angle, 0.0f, 0.0f, 1.0f);
-		dglTranslatef(0, 16, 0);
-		dglDisable(GL_TEXTURE_2D);
-		dglSetVertex(v);
-		dglTriangle(0, 1, 2);
-		dglDrawGeometry(3, v);
-		dglEnable(GL_TEXTURE_2D);
-		dglPopMatrix();
+		glPushMatrix();
+		glTranslatef(160, 120, 0);
+		glRotatef(angle, 0.0f, 0.0f, 1.0f);
+		glTranslatef(0, 16, 0);
+		glDisable(GL_TEXTURE_2D);
+		glSetVertex(v);
+		glTriangle(0, 1, 2);
+		glDrawGeometry(3, v);
+		glEnable(GL_TEXTURE_2D);
+		glPopMatrix();
 
 		GL_ResetViewport();
 		GL_SetState(GLSTATE_BLEND, 0);
@@ -373,6 +374,7 @@ void ST_Ticker(void) {
 	for (ind = 0; ind < NUMCARDS; ind++) {
 		/* CHECK FOR INITIALIZATION */
 		if (plyr->tryopen[ind]) {
+			plyr->tryopen[ind] = false;
 			flashCards[ind].active = true;
 			flashCards[ind].delay = FLASHDELAY;
 			flashCards[ind].times = FLASHTIMES + 1;
@@ -477,10 +479,10 @@ void ST_FlashingScreen(byte r, byte g, byte b, byte a) {
 		GL_SetState(GLSTATE_BLEND, 1);
 		GL_SetOrtho(1);
 
-		dglDisable(GL_TEXTURE_2D);
-		dglColor4ubv((byte*)&c);
-		dglRecti(SCREENWIDTH, SCREENHEIGHT, 0, 0);
-		dglEnable(GL_TEXTURE_2D);
+		glDisable(GL_TEXTURE_2D);
+		glColor4ubv((byte*)&c);			
+		glRecti(SCREENWIDTH, SCREENHEIGHT, 0, 0);
+		glEnable(GL_TEXTURE_2D);
 
 		GL_SetState(GLSTATE_BLEND, 0);
 	}
@@ -493,10 +495,10 @@ void ST_FlashingScreen(byte r, byte g, byte b, byte a) {
 static void ST_DrawStatusItem(const float xy[4][2], const float uv[4][2], rcolor color) {
 	int i;
 
-	dglTriangle(st_vtxcount + 0, st_vtxcount + 1, st_vtxcount + 2);
-	dglTriangle(st_vtxcount + 0, st_vtxcount + 2, st_vtxcount + 3);
+	glTriangle(st_vtxcount + 0, st_vtxcount + 1, st_vtxcount + 2);
+	glTriangle(st_vtxcount + 0, st_vtxcount + 2, st_vtxcount + 3);
 
-	dglSetVertexColor(st_vtx + st_vtxcount, color, 4);
+	glSetVertexColor(st_vtx + st_vtxcount, color, 4);
 
 	for (i = 0; i < 4; i++) {
 		st_vtx[st_vtxcount + i].x = xy[i][0];
@@ -587,8 +589,8 @@ static void ST_DrawStatus(void) {
 	width = (float)gfxwidth[lump];
 	height = (float)gfxheight[lump];
 
-	dglTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, DGL_CLAMP);
-	dglTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, DGL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
 	if (st_drawhud.value >= 2) {
 		GL_SetOrthoScale(0.725f);
@@ -596,7 +598,7 @@ static void ST_DrawStatus(void) {
 
 	GL_SetOrtho(0);
 
-	dglSetVertex(st_vtx);
+	glSetVertex(st_vtx);
 	st_vtxcount = 0;
 
 	if (st_drawhud.value == 1) {
@@ -655,7 +657,7 @@ static void ST_DrawStatus(void) {
 
 	ST_DrawKey(it_redskull, uv, st_key3Vertex);
 
-	dglDrawGeometry(st_vtxcount, st_vtx);
+	glDrawGeometry(st_vtxcount, st_vtx);
 
 	GL_ResetViewport();
 	GL_SetState(GLSTATE_BLEND, 0);
@@ -687,8 +689,8 @@ void ST_DrawCrosshair(int x, int y, int slot, byte scalefactor, rcolor color) {
 	GL_BindGfxTexture("CRSHAIRS", true);
 	GL_SetState(GLSTATE_BLEND, 1);
 
-	dglTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, DGL_CLAMP);
-	dglTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, DGL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
 	u = 1.0f / st_crosshairs;
 	scale = scalefactor == 0 ? ST_CROSSHAIRSIZE : (ST_CROSSHAIRSIZE / (1 << scalefactor));
@@ -709,10 +711,10 @@ static void ST_DrawJMessage(int pic) {
 	GL_BindGfxTexture(lumpinfo[lump].name, true);
 	GL_SetState(GLSTATE_BLEND, 1);
 
-	dglTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, DGL_CLAMP);
-	dglTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, DGL_CLAMP);
-	dglTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	dglTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 
 	GL_SetupAndDraw2DQuad(
 		20,
@@ -765,14 +767,32 @@ void ST_Drawer(void) {
 		if (st_drawhud.value == 1) {
 			//Draw Ammo counter
 			if (weaponinfo[plyr->readyweapon].ammo != am_noammo) {
-				Draw_Number(160, 215, plyr->ammo[weaponinfo[plyr->readyweapon].ammo], 0, REDALPHA(0x9f));
+				if (st_hud_color.value == 0)
+				{
+					Draw_Number(160, 215, plyr->ammo[weaponinfo[plyr->readyweapon].ammo], 0, REDALPHA(0x9f));
+				}
+				else if (st_hud_color.value == 1)
+				{
+					Draw_Number(160, 215, plyr->ammo[weaponinfo[plyr->readyweapon].ammo], 0, WHITEALPHA(0x9f));
+				}
 			}
 
-			//Draw Health
-			Draw_Number(49, 215, plyr->health, 0, REDALPHA(0x9f));
+			if (st_hud_color.value == 0)
+			{
+				//Draw Health
+				Draw_Number(49, 215, plyr->health, 0, REDALPHA(0x9f));
 
-			//Draw Armor
-			Draw_Number(271, 215, plyr->armorpoints, 0, REDALPHA(0x9f));
+				//Draw Armor
+				Draw_Number(271, 215, plyr->armorpoints, 0, REDALPHA(0x9f));
+			}
+			else if (st_hud_color.value == 1)
+			{
+				//Draw Health
+				Draw_Number(49, 215, plyr->health, 0, WHITEALPHA(0x9f));
+
+				//Draw Armor
+				Draw_Number(271, 215, plyr->armorpoints, 0, WHITEALPHA(0x9f));
+			}
 		}
 		// arranged hud layout
 		else if (st_drawhud.value >= 2) {
@@ -926,7 +946,7 @@ void ST_Drawer(void) {
 			int8_t contextstring[32];
 			float x;
 
-#if defined(_WIN32) && defined(USE_XINPUT)  // XINPUT
+#if defined(_WIN32) && defined(USE_XINPUT)// || !defined(VITA) // XINPUT
 			if (xgamepad.connected) {
 				M_DrawXInputButton(140, 156, XINPUT_GAMEPAD_A);
 				Draw_Text(213, 214, WHITEALPHA(0xA0), 0.75, false, "Use");
@@ -1080,7 +1100,7 @@ void ST_Init(void) {
 
 	for (i = 0; i < NUMCARDS; i++) {
 		flashCards[i].active = false;
-		//players[consoleplayer].tryopen[i] = false;
+		players[consoleplayer].tryopen[i] = false;
 	}
 
 	// setup hud messages
