@@ -22,13 +22,12 @@
 
 #ifndef __GL_MAIN_H__
 #define __GL_MAIN_H__
-#ifdef VITA
-#include <vitaGL.h>
-#else
+
 #include <SDL2/SDL_opengl.h>
-#endif
 #ifdef __APPLE__
 #include <OpenGL/glu.h>
+#else
+#include <SDL_opengl.h>
 #endif
 
 
