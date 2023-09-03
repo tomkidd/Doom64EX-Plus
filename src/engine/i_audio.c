@@ -37,10 +37,10 @@
 #include <unistd.h>
 #endif
 
-#ifdef __APPLE__
-#include <SDL2/SDL.h>
-#else
+#ifdef __OpenBSD__
 #include <SDL.h>
+#else
+#include <SDL2/SDL.h>
 #endif
 
 //#if !defined _WIN32 || __APPLE__ || __arm__ || __aarch64__
@@ -77,7 +77,7 @@ static SDL_sem *semaphore = NULL;
 #define SEMAPHORE_UNLOCK()  SDL_SemPost(semaphore); }
 
 // 20120205 villsa - bool to determine if sequencer is ready or not
-static dboolean seqready = false;
+static boolean seqready = false;
 
 //
 // DEFINES
@@ -173,14 +173,14 @@ typedef struct {
     dword       nexttic;
     dword       lasttic;
     dword       starttic;
-    uint64_t      starttime;
-    uint64_t      curtime;
+    uint32_t      starttime;
+    uint32_t      curtime;
     chanstate_e state;
-    dboolean    paused;
+    boolean    paused;
 
     // read by audio thread but only
     // modified by game code
-    dboolean    stop;
+    boolean    stop;
     float       basevol;
 } channel_t;
 
@@ -364,7 +364,7 @@ static byte Chan_GetNextMidiByte(channel_t* chan) {
 // Checks if the midi reader has reached the end
 //
 
-static dboolean Chan_CheckTrackEnd(channel_t* chan) {
+static boolean Chan_CheckTrackEnd(channel_t* chan) {
     return ((dword)(chan->pos - chan->song->data) >= chan->song->length);
 }
 
@@ -440,7 +440,7 @@ static void Song_ClearPlaylist(void) {
 // Chan_RemoveTrackFromPlaylist
 //
 
-static dboolean Chan_RemoveTrackFromPlaylist(doomseq_t* seq, channel_t* chan) {
+static boolean Chan_RemoveTrackFromPlaylist(doomseq_t* seq, channel_t* chan) {
     if(!chan->song || !chan->track) {
         return false;
     }
@@ -825,7 +825,7 @@ static const signalhandler seqsignallist[MAXSIGNALTYPES] = {
 // Chan_CheckState
 //
 
-static dboolean Chan_CheckState(doomseq_t* seq, channel_t* chan) {
+static boolean Chan_CheckState(doomseq_t* seq, channel_t* chan) {
     if(chan->state == CHAN_STATE_ENDED) {
         return true;
     }
@@ -980,7 +980,7 @@ static void Seq_RunSong(doomseq_t* seq, dword msecs) {
 // Allocate data for all tracks for a midi song
 //
 
-static dboolean Song_RegisterTracks(song_t* song) {
+static boolean Song_RegisterTracks(song_t* song) {
     int i;
     byte* data;
 
@@ -1012,7 +1012,7 @@ static dboolean Song_RegisterTracks(song_t* song) {
 // Allocate data for all midi songs
 //
 
-static dboolean Seq_RegisterSongs(doomseq_t* seq) {
+static boolean Seq_RegisterSongs(doomseq_t* seq) {
     int i;
     int start;
     int end;
@@ -1077,30 +1077,10 @@ static dboolean Seq_RegisterSongs(doomseq_t* seq) {
 // Seq_Shutdown
 //
 
-static void Seq_Shutdown(doomseq_t* seq) {
-
-    //
-    // signal the sequencer to shut down
-    //
-    Seq_SetStatus(seq, SEQ_SIGNAL_SHUTDOWN);
-
-    //
-    // wait until the audio thread is finished
-    //
-    SDL_WaitThread(seq->thread, NULL);
-
+static void Seq_Shutdown(doomseq_t* seq)
+{
     // Close SDL Audio Device
     SDL_CloseAudioDevice(1);
-
-    //
-    // fluidsynth cleanup stuff
-    //
-    delete_fluid_synth(seq->synth);
-    delete_fluid_settings(seq->settings);
-
-    seq->synth = NULL;
-    seq->driver = NULL;
-    seq->settings = NULL;
 }
 
 //
@@ -1160,7 +1140,7 @@ static int SDLCALL Thread_PlayerHandler(void *param) {
 //
 
 void I_InitSequencer(void) {
-    dboolean sffound;
+    boolean sffound;
     int8_t *sfpath;
 
     CON_DPrintf("--------Initializing Software Synthesizer--------\n");
@@ -1275,7 +1255,7 @@ void I_InitSequencer(void) {
 
     Song_ClearPlaylist();
 
-    if (SDL_Init(SDL_INIT_AUDIO | SDL_INIT_TIMER) < 0) {
+    if (SDL_Init(SDL_INIT_AUDIO | SDL_INIT_TIMER)) {
         printf("Could not initialize SDL - %s\n", SDL_GetError());
     }
 

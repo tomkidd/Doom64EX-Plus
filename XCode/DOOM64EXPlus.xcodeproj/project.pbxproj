@@ -117,8 +117,7 @@
 		2AB7DEC9293B9E1E009A3CA3 /* libz.1.2.13.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A44CD512930B1AC005B23CA /* libz.1.2.13.dylib */; };
 		2AB7DECB293B9E2E009A3CA3 /* libz.1.2.13.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2AB7DECA293B9E2E009A3CA3 /* libz.1.2.13.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		2AB7DECE293BD848009A3CA3 /* i_sdlinput.c in Sources */ = {isa = PBXBuildFile; fileRef = 2AB7DECD293BD825009A3CA3 /* i_sdlinput.c */; };
-		A15996072AA1413E006AD302 /* i_w3swrapper.c in Sources */ = {isa = PBXBuildFile; fileRef = A15996062AA1413E006AD302 /* i_w3swrapper.c */; };
-		A19E98AA2AA4EB890063AFAD /* gl_utils.c in Sources */ = {isa = PBXBuildFile; fileRef = A19E98A92AA4EB890063AFAD /* gl_utils.c */; };
+		A19E98AD2AA527120063AFAD /* dgl.c in Sources */ = {isa = PBXBuildFile; fileRef = A19E98AB2AA527120063AFAD /* dgl.c */; };
 		A1A8CE612AA13362007C3BB6 /* gl_shader.c in Sources */ = {isa = PBXBuildFile; fileRef = A1FC08222A9E5A4D00EC8372 /* gl_shader.c */; };
 		A1A8CE642AA135AB007C3BB6 /* net_structure.c in Sources */ = {isa = PBXBuildFile; fileRef = A1A8CE622AA135AB007C3BB6 /* net_structure.c */; };
 		A1FC08112A9D1D8200EC8372 /* deh_str.c in Sources */ = {isa = PBXBuildFile; fileRef = A1FC080F2A9D1D7300EC8372 /* deh_str.c */; };
@@ -362,10 +361,8 @@
 		2AB7DECA293B9E2E009A3CA3 /* libz.1.2.13.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.1.2.13.dylib; path = Libs/libz.1.2.13.dylib; sourceTree = "<group>"; };
 		2AB7DECC293BD825009A3CA3 /* i_sdlinput.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = i_sdlinput.h; path = ../src/engine/i_sdlinput.h; sourceTree = "<group>"; };
 		2AB7DECD293BD825009A3CA3 /* i_sdlinput.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = i_sdlinput.c; path = ../src/engine/i_sdlinput.c; sourceTree = "<group>"; };
-		A15996052AA1413E006AD302 /* i_w3swrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = i_w3swrapper.h; path = ../src/engine/i_w3swrapper.h; sourceTree = "<group>"; };
-		A15996062AA1413E006AD302 /* i_w3swrapper.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = i_w3swrapper.c; path = ../src/engine/i_w3swrapper.c; sourceTree = "<group>"; };
-		A19E98A82AA4EB880063AFAD /* gl_utils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = gl_utils.h; path = ../src/engine/gl_utils.h; sourceTree = "<group>"; };
-		A19E98A92AA4EB890063AFAD /* gl_utils.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = gl_utils.c; path = ../src/engine/gl_utils.c; sourceTree = "<group>"; };
+		A19E98AB2AA527120063AFAD /* dgl.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = dgl.c; path = ../src/engine/dgl.c; sourceTree = "<group>"; };
+		A19E98AC2AA527120063AFAD /* dgl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = dgl.h; path = ../src/engine/dgl.h; sourceTree = "<group>"; };
 		A1A8CE622AA135AB007C3BB6 /* net_structure.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = net_structure.c; path = ../src/engine/net_structure.c; sourceTree = "<group>"; };
 		A1A8CE632AA135AB007C3BB6 /* net_structure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = net_structure.h; path = ../src/engine/net_structure.h; sourceTree = "<group>"; };
 		A1FC080F2A9D1D7300EC8372 /* deh_str.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = deh_str.c; path = ../src/engine/deh_str.c; sourceTree = "<group>"; };
@@ -447,10 +444,8 @@
 		AB5A80B91A8DABE100AF539F = {
 			isa = PBXGroup;
 			children = (
-				A19E98A92AA4EB890063AFAD /* gl_utils.c */,
-				A19E98A82AA4EB880063AFAD /* gl_utils.h */,
-				A15996062AA1413E006AD302 /* i_w3swrapper.c */,
-				A15996052AA1413E006AD302 /* i_w3swrapper.h */,
+				A19E98AB2AA527120063AFAD /* dgl.c */,
+				A19E98AC2AA527120063AFAD /* dgl.h */,
 				A1A8CE622AA135AB007C3BB6 /* net_structure.c */,
 				A1A8CE632AA135AB007C3BB6 /* net_structure.h */,
 				A1FC08222A9E5A4D00EC8372 /* gl_shader.c */,
@@ -785,14 +780,13 @@
 				2A44CF402930B717005B23CA /* deh_ptr.c in Sources */,
 				2A44CF332930B717005B23CA /* w_wad.c in Sources */,
 				2A44CF262930B717005B23CA /* net_io.c in Sources */,
-				A19E98AA2AA4EB890063AFAD /* gl_utils.c in Sources */,
 				2A44CF372930B717005B23CA /* z_zone.c in Sources */,
+				A19E98AD2AA527120063AFAD /* dgl.c in Sources */,
 				2A44CEFD2930B717005B23CA /* r_scene.c in Sources */,
 				2A44CF3C2930B717005B23CA /* m_fixed.c in Sources */,
 				2A44CF002930B717005B23CA /* con_console.c in Sources */,
 				2A44CF0F2930B717005B23CA /* g_settings.c in Sources */,
 				2A44CF362930B717005B23CA /* p_saveg.c in Sources */,
-				A15996072AA1413E006AD302 /* i_w3swrapper.c in Sources */,
 				2A44CF122930B717005B23CA /* r_drawlist.c in Sources */,
 				2A44CF352930B717005B23CA /* md5.c in Sources */,
 				2A44CF2C2930B717005B23CA /* p_macros.c in Sources */,

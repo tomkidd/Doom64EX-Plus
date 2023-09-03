@@ -25,17 +25,17 @@
 #define __DOOMTYPE__
 
 #ifdef _WIN32
-#include <SDL_config.h> //Remove also here...
+#include <SDL2/SDL_config.h>
 #endif
 
 #include <stdint.h>
 #include <limits.h>
 #include <stdbool.h>
 
-typedef int             dboolean;
+typedef unsigned char   boolean;
 typedef uint8_t         byte;
-typedef uint16_t		word;
-typedef uint64_t		dword;
+typedef uint16_t	word;
+typedef intptr_t	dword;
 
 #include <limits.h>
 #define D_MININT INT_MIN
@@ -53,4 +53,15 @@ typedef uint64_t		dword;
 #define BETWEEN(l,u,x) ((l)>(x)?(l):(x)>(u)?(u):(x))
 #endif
 
+#ifdef _WIN32
+
+#define DIR_SEPARATOR '\\'
+#define PATH_SEPARATOR ';'
+
+#else
+
+#define DIR_SEPARATOR '/'
+#define PATH_SEPARATOR ':'
+
+#endif
 #endif
