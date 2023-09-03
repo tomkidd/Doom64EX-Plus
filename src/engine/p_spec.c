@@ -1647,7 +1647,7 @@ boolean P_UseSpecialLine(mobj_t* thing, line_t* line, int side) {
 	/* */
 	/*	Switches that other things can activate */
 	/* */
-	if (!player)
+	if (!player && thing->type != MT_FAKEITEM)
 	{
 		/* Missiles should NOT trigger specials... */
 		if (thing->flags & MF_MISSILE)
@@ -1859,10 +1859,10 @@ void P_UpdateSpecials(void) {
 				sector->xoffset -= speed;
 			}
 			if (sector->flags & MS_SCROLLUP) {
-				sector->yoffset -= speed;
+				sector->yoffset += speed;
 			}
 			if (sector->flags & MS_SCROLLDOWN) {
-				sector->yoffset += speed;
+				sector->yoffset -= speed;
 			}
 		}
 	}
