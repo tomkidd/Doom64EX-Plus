@@ -435,7 +435,7 @@ int Draw_BigText(int x, int y, rcolor color, const int8_t* string) {
 			continue;    // villsa: safety check
 		}
 		else if (c == 0x20) {
-			x += 6;
+			x += 8;
 			continue;
 		}
 		else {
@@ -448,6 +448,9 @@ int Draw_BigText(int x, int y, rcolor color, const int8_t* string) {
 			if (c >= 'a' && c <= 'z') {
 				index = (c - 'a') + SM_FONT2;
 			}
+//			if (c >= 'Ȁ' && c <= 'Ñ') {
+//				index = (c - 'Ȁ') + SM_FONT3;
+//			}
 			if (c == '-') {
 				index = SM_MISCFONT;
 			}
