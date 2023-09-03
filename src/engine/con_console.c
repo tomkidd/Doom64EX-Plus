@@ -35,10 +35,6 @@
 #include "r_main.h"
 #include "i_system.h"
 #include "gl_texture.h"
-#ifdef VITA
-#include <vitaGL.h>
-#endif
-
 
 #ifdef __APPLE__
 #include <SDL2/SDL.h>
@@ -480,20 +476,21 @@ void CON_Draw(void) {
 	GL_SetOrtho(1);
 	GL_SetState(GLSTATE_BLEND, 1);
 
-	glDisable(GL_TEXTURE_2D);
-	glColor4ub(0, 0, 0, 128);
-	glRectf(SCREENWIDTH, CONSOLE_Y + CONFONT_YPAD, 0, 0);
-
+	dglDisable(GL_TEXTURE_2D);
+	dglColor4ub(0, 0, 0, 128);
+#ifndef WIP_VITA	
+	dglRectf(SCREENWIDTH, CONSOLE_Y + CONFONT_YPAD, 0, 0);
+#endif
 	GL_SetState(GLSTATE_BLEND, 0);
 
-	glColor4f(0, 1, 0, 1);
-	glBegin(GL_LINES);
-	glVertex2f(0, CONSOLE_Y - 1);
-	glVertex2f(SCREENWIDTH, CONSOLE_Y - 1);
-	glVertex2f(0, CONSOLE_Y + CONFONT_YPAD);
-	glVertex2f(SCREENWIDTH, CONSOLE_Y + CONFONT_YPAD);
-	glEnd();
-	glEnable(GL_TEXTURE_2D);
+	dglColor4f(0, 1, 0, 1);
+	dglBegin(GL_LINES);
+	dglVertex2f(0, CONSOLE_Y - 1);
+	dglVertex2f(SCREENWIDTH, CONSOLE_Y - 1);
+	dglVertex2f(0, CONSOLE_Y + CONFONT_YPAD);
+	dglVertex2f(SCREENWIDTH, CONSOLE_Y + CONFONT_YPAD);
+	dglEnd();
+	dglEnable(GL_TEXTURE_2D);
 
 	line = console_head;
 

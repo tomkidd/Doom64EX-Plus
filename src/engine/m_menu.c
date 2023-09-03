@@ -4100,16 +4100,17 @@ static void M_DrawSaveGameFrontend(menu_t* def) {
 	GL_SetState(GLSTATE_BLEND, 1);
 	GL_SetOrtho(0);
 
-	glDisable(GL_TEXTURE_2D);
+	dglDisable(GL_TEXTURE_2D);
 
 	//
 	// draw back panels
 	//
-	glColor4ub(4, 4, 4, menualphacolor);
+	dglColor4ub(4, 4, 4, menualphacolor);
+#ifndef WIP_VITA	
 	//
 	// save game panel
 	//
-	glRecti(
+	dglRecti(
 		def->x - 48,
 		def->y - 12,
 		def->x + 256,
@@ -4118,22 +4119,23 @@ static void M_DrawSaveGameFrontend(menu_t* def) {
 	//
 	// stats panel
 	//
-	glRecti(
+	dglRecti(
 		def->x + 272,
 		def->y - 12,
 		def->x + 464,
 		def->y + 116
 	);
-
+#endif
 	//
 	// draw outline for panels
 	//
-	glColor4ub(240, 86, 84, menualphacolor);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	dglColor4ub(240, 86, 84, menualphacolor);
+	dglPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+#ifndef WIP_VITA
 	//
 	// save game panel
 	//
-	glRecti(
+	dglRecti(
 		def->x - 48,
 		def->y - 12,
 		def->x + 256,
@@ -4142,14 +4144,15 @@ static void M_DrawSaveGameFrontend(menu_t* def) {
 	//
 	// stats panel
 	//
-	glRecti(
+	dglRecti(
 		def->x + 272,
 		def->y - 12,
 		def->x + 464,
 		def->y + 116
 	);
-	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	glEnable(GL_TEXTURE_2D);
+#endif
+	dglPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+	dglEnable(GL_TEXTURE_2D);
 
 	//
 	// draw thumbnail texture and stats
@@ -4316,11 +4319,11 @@ void M_DrawXInputButton(int x, int y, int button) {
 	width = (float)gfxwidth[pic];
 	height = (float)gfxheight[pic];
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	dglTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, DGL_CLAMP);
+	dglTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, DGL_CLAMP);
 
-	glEnable(GL_BLEND);
-	glSetVertex(vtx);
+	dglEnable(GL_BLEND);
+	dglSetVertex(vtx);
 
 	GL_SetOrtho(0);
 
@@ -4345,12 +4348,12 @@ void M_DrawXInputButton(int x, int y, int button) {
 		color
 	);
 
-	glTriangle(0, 1, 2);
-	glTriangle(3, 2, 1);
-	glDrawGeometry(4, vtx);
+	dglTriangle(0, 1, 2);
+	dglTriangle(3, 2, 1);
+	dglDrawGeometry(4, vtx);
 
 	GL_ResetViewport();
-	glDisable(GL_BLEND);
+	dglDisable(GL_BLEND);
 }
 
 #endif
@@ -4800,11 +4803,11 @@ static void M_DrawMenuSkull(int x, int y) {
 
 	pic = GL_BindGfxTexture("SYMBOLS", true);
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+	dglTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, DGL_CLAMP);
+	dglTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, DGL_CLAMP);
 
-	glEnable(GL_BLEND);
-	glSetVertex(vtx);
+	dglEnable(GL_BLEND);
+	dglSetVertex(vtx);
 
 	GL_SetOrtho(0);
 
@@ -4834,12 +4837,12 @@ static void M_DrawMenuSkull(int x, int y) {
 		color
 	);
 
-	glTriangle(0, 1, 2);
-	glTriangle(3, 2, 1);
-	glDrawGeometry(4, vtx);
+	dglTriangle(0, 1, 2);
+	dglTriangle(3, 2, 1);
+	dglDrawGeometry(4, vtx);
 
 	GL_ResetViewport();
-	glDisable(GL_BLEND);
+	dglDisable(GL_BLEND);
 }
 
 //
@@ -4856,8 +4859,8 @@ static void M_DrawCursor(int x, int y) {
 		gfxIdx = GL_BindGfxTexture("CURSOR", true);
 		factor = (((float)SCREENHEIGHT * video_ratio) / (float)video_width) / scale;
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+		dglTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, DGL_CLAMP);
+		dglTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, DGL_CLAMP);
 
 		GL_SetOrthoScale(scale);
 		GL_SetState(GLSTATE_BLEND, 1);

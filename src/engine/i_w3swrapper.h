@@ -28,11 +28,10 @@
 #ifdef USE_STDINT 
 #include <stdint.h>
 #endif
-#ifdef _WIN32
+
 #include <fcntl.h>
-#include <io.h>
-#else
-#include <fcntl.h>
+
+#ifndef _WIN32
 #include <unistd.h>
 #endif
 #ifdef OLD_MSVC
@@ -117,7 +116,7 @@ typedef w3suint64_t dword;
 #define Free(userdir)	SDL_free(userdir)
 #endif
 
-#ifdef _WIN32
+#ifdef _WIN32 //TBD: Sony Playstation 2 port
 #define w3ssleep(usecs) Sleep(usecs)
 #else
 void w3ssleep(unsigned long usecs);
