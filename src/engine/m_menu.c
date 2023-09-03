@@ -613,6 +613,33 @@ void M_DrawStartNewNotify(void) {
 
 //------------------------------------------------------------------------
 //
+// MAP SELECT MENU
+//
+//------------------------------------------------------------------------
+
+int map = 1;
+void M_ChooseMap(int choice);
+
+menu_t MapSelectDef = {
+	0,
+	false,
+	&MainDef,
+	NULL,
+	NULL,
+	"Choose Campaign",
+	112,80,
+	0,
+	false,
+	NULL,
+	-1,
+	0,
+	1.0f,
+	NULL,
+	NULL
+};
+
+//------------------------------------------------------------------------
+//
 // NEW GAME MENU
 //
 //------------------------------------------------------------------------
@@ -661,11 +688,26 @@ void M_NewGame(int choice) {
 		return;
 	}
 
+	if (MapSelectDef.numitems > 0) {
+		M_SetupNextMenu(&MapSelectDef);
+		return;
+	}
+	
+	M_SetupNextMenu(&NewDef);
+}
+
+void M_ChooseMap(int choice) {
+	if (netgame && !demoplayback) {
+		M_StartControlPanel(true);
+		M_SetupNextMenu(&StartNewNotifyDef);
+		return;
+	}
+	map = P_GetEpisode(choice)->mapid;
 	M_SetupNextMenu(&NewDef);
 }
 
 void M_ChooseSkill(int choice) {
-	G_DeferedInitNew(choice, 1);
+	G_DeferedInitNew(choice, map);
 	M_ClearMenus();
 	dmemset(passwordData, 0xff, 16);
 	allowmenu = false;
