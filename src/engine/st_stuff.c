@@ -65,6 +65,7 @@ CVAR(m_messages, 1);
 CVAR(m_playername, Player);
 CVAR(st_showpendingweapon, 1);
 CVAR(st_showstats, 0);
+CVAR(st_showstatsalwayson, 0);
 CVAR(st_hud_color, 0);
 
 CVAR_EXTERNAL(p_usecontext);
@@ -284,7 +285,7 @@ static void ST_DrawDamageMarkers(void) {
 		dglTranslatef(0, 16, 0);
 		dglDisable(GL_TEXTURE_2D);
 		dglSetVertex(v);
-		RB_AddTriangle(0, 1, 2);
+		dglTriangle(0, 1, 2);
 		dglDrawGeometry(3, v);
 		dglEnable(GL_TEXTURE_2D);
 		dglPopMatrix();
@@ -495,8 +496,8 @@ void ST_FlashingScreen(byte r, byte g, byte b, byte a) {
 static void ST_DrawStatusItem(const float xy[4][2], const float uv[4][2], rcolor color) {
 	int i;
 
-	RB_AddTriangle(st_vtxcount + 0, st_vtxcount + 1, st_vtxcount + 2);
-	RB_AddTriangle(st_vtxcount + 0, st_vtxcount + 2, st_vtxcount + 3);
+	dglTriangle(st_vtxcount + 0, st_vtxcount + 1, st_vtxcount + 2);
+	dglTriangle(st_vtxcount + 0, st_vtxcount + 2, st_vtxcount + 3);
 
 	dglSetVertexColor(st_vtx + st_vtxcount, color, 4);
 
@@ -992,6 +993,21 @@ void ST_Drawer(void) {
 		Draw_Text(20, 450, WHITE, 0.5f, false,
 			"Secrets:   %i / %i", plyr->secretcount, totalsecret);
 		Draw_Text(20, 460, WHITE, 0.5f, false,
+			"Time:      %2.2d:%2.2d", (leveltime / TICRATE) / 60, (leveltime / TICRATE) % 60);
+	}
+
+	//
+	// display stats in game
+	//
+
+	if (st_showstatsalwayson.value && !automapactive) {
+		Draw_Text(0, 470, WHITE, 0.5f, false,
+			"Monsters:  %i / %i", plyr->killcount, totalkills);
+		Draw_Text(160, 470, WHITE, 0.5f, false,
+			"Items:     %i / %i", plyr->itemcount, totalitems);
+		Draw_Text(350, 470, WHITE, 0.5f, false,
+			"Secrets:   %i / %i", plyr->secretcount, totalsecret);
+		Draw_Text(500, 470, WHITE, 0.5f, false,
 			"Time:      %2.2d:%2.2d", (leveltime / TICRATE) / 60, (leveltime / TICRATE) % 60);
 	}
 }
@@ -1514,6 +1530,7 @@ void ST_RegisterCvars(void) {
 	CON_CvarRegister(&st_regionmsg);
 	CON_CvarRegister(&st_showpendingweapon);
 	CON_CvarRegister(&st_showstats);
+	CON_CvarRegister(&st_showstatsalwayson);
 	CON_CvarRegister(&m_messages);
 	CON_CvarRegister(&m_playername);
 }

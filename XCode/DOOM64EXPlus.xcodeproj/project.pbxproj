@@ -46,7 +46,6 @@
 		2A44CF042930B717005B23CA /* m_password.c in Sources */ = {isa = PBXBuildFile; fileRef = 2A44CE5C2930B709005B23CA /* m_password.c */; };
 		2A44CF052930B717005B23CA /* g_actions.c in Sources */ = {isa = PBXBuildFile; fileRef = 2A44CE5D2930B709005B23CA /* g_actions.c */; };
 		2A44CF072930B717005B23CA /* in_stuff.c in Sources */ = {isa = PBXBuildFile; fileRef = 2A44CE5F2930B709005B23CA /* in_stuff.c */; };
-		2A44CF082930B717005B23CA /* i_audio.c in Sources */ = {isa = PBXBuildFile; fileRef = 2A44CE612930B709005B23CA /* i_audio.c */; };
 		2A44CF092930B717005B23CA /* deh_misc.c in Sources */ = {isa = PBXBuildFile; fileRef = 2A44CE622930B709005B23CA /* deh_misc.c */; };
 		2A44CF0A2930B717005B23CA /* p_floor.c in Sources */ = {isa = PBXBuildFile; fileRef = 2A44CE632930B70A005B23CA /* p_floor.c */; };
 		2A44CF0B2930B717005B23CA /* p_mobj.c in Sources */ = {isa = PBXBuildFile; fileRef = 2A44CE652930B70A005B23CA /* p_mobj.c */; };
@@ -119,6 +118,7 @@
 		A19E98AD2AA527120063AFAD /* dgl.c in Sources */ = {isa = PBXBuildFile; fileRef = A19E98AB2AA527120063AFAD /* dgl.c */; };
 		A19E98AF2AA543580063AFAD /* libfluidsynth.3.2.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A19E98AE2AA543580063AFAD /* libfluidsynth.3.2.1.dylib */; };
 		A19E98B02AA543580063AFAD /* libfluidsynth.3.2.1.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = A19E98AE2AA543580063AFAD /* libfluidsynth.3.2.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		A19E98B42AA552790063AFAD /* i_mac_audio.c in Sources */ = {isa = PBXBuildFile; fileRef = A19E98B22AA552790063AFAD /* i_mac_audio.c */; };
 		A1A8CE612AA13362007C3BB6 /* gl_shader.c in Sources */ = {isa = PBXBuildFile; fileRef = A1FC08222A9E5A4D00EC8372 /* gl_shader.c */; };
 		A1A8CE642AA135AB007C3BB6 /* net_structure.c in Sources */ = {isa = PBXBuildFile; fileRef = A1A8CE622AA135AB007C3BB6 /* net_structure.c */; };
 		A1FC08112A9D1D8200EC8372 /* deh_str.c in Sources */ = {isa = PBXBuildFile; fileRef = A1FC080F2A9D1D7300EC8372 /* deh_str.c */; };
@@ -376,6 +376,8 @@
 		A19E98AB2AA527120063AFAD /* dgl.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = dgl.c; path = ../src/engine/dgl.c; sourceTree = "<group>"; };
 		A19E98AC2AA527120063AFAD /* dgl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = dgl.h; path = ../src/engine/dgl.h; sourceTree = "<group>"; };
 		A19E98AE2AA543580063AFAD /* libfluidsynth.3.2.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfluidsynth.3.2.1.dylib; path = Libs/libfluidsynth.3.2.1.dylib; sourceTree = "<group>"; };
+		A19E98B22AA552790063AFAD /* i_mac_audio.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = i_mac_audio.c; path = ../src/engine/i_mac_audio.c; sourceTree = "<group>"; };
+		A19E98B32AA552790063AFAD /* i_mac_audio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = i_mac_audio.h; path = ../src/engine/i_mac_audio.h; sourceTree = "<group>"; };
 		A1A8CE622AA135AB007C3BB6 /* net_structure.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = net_structure.c; path = ../src/engine/net_structure.c; sourceTree = "<group>"; };
 		A1A8CE632AA135AB007C3BB6 /* net_structure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = net_structure.h; path = ../src/engine/net_structure.h; sourceTree = "<group>"; };
 		A1FC080F2A9D1D7300EC8372 /* deh_str.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = deh_str.c; path = ../src/engine/deh_str.c; sourceTree = "<group>"; };
@@ -458,6 +460,8 @@
 		AB5A80B91A8DABE100AF539F = {
 			isa = PBXGroup;
 			children = (
+				A19E98B22AA552790063AFAD /* i_mac_audio.c */,
+				A19E98B32AA552790063AFAD /* i_mac_audio.h */,
 				A19E98AB2AA527120063AFAD /* dgl.c */,
 				A19E98AC2AA527120063AFAD /* dgl.h */,
 				A1A8CE622AA135AB007C3BB6 /* net_structure.c */,
@@ -773,6 +777,7 @@
 				2A44CF022930B717005B23CA /* d_devstat.c in Sources */,
 				2A44CF412930B717005B23CA /* gl_main.c in Sources */,
 				2A44CF172930B717005B23CA /* p_setup.c in Sources */,
+				A19E98B42AA552790063AFAD /* i_mac_audio.c in Sources */,
 				2A44CF2B2930B717005B23CA /* i_video.c in Sources */,
 				2A44CF452930B717005B23CA /* gl_texture.c in Sources */,
 				2A44CF432930B717005B23CA /* p_sight.c in Sources */,
@@ -822,7 +827,6 @@
 				2A44CEEF2930B717005B23CA /* i_system.c in Sources */,
 				2A44CF202930B717005B23CA /* net_packet.c in Sources */,
 				2A44CF3F2930B717005B23CA /* net_loop.c in Sources */,
-				2A44CF082930B717005B23CA /* i_audio.c in Sources */,
 				2A44CEFA2930B717005B23CA /* s_sound.c in Sources */,
 				2A44CF102930B717005B23CA /* r_lights.c in Sources */,
 				2A44CF0B2930B717005B23CA /* p_mobj.c in Sources */,

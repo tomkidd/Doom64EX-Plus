@@ -47,10 +47,6 @@
 #include "m_misc.h"
 #include "g_actions.h"
 
-#ifndef _WIN32
-typedef int BOOL;
-#endif
-
 int ViewWindowX = 0;
 int ViewWindowY = 0;
 int ViewWidth   = 0;
@@ -68,13 +64,14 @@ static float glScaleFactor = 1.0f;
 
 boolean    usingGL = false;
 int         DGL_CLAMP = GL_CLAMP;
-float       max_anisotropic = 0;
+float       max_anisotropic = 16.0;
 boolean    widescreen = false;
 
 CVAR_EXTERNAL(v_vsync);
 CVAR_EXTERNAL(r_filter);
 CVAR_EXTERNAL(r_texturecombiner);
 CVAR_EXTERNAL(r_anisotropic);
+CVAR_EXTERNAL(r_multisample);
 CVAR_EXTERNAL(st_flashoverlay);
 CVAR_EXTERNAL(r_colorscale);
 
@@ -144,6 +141,21 @@ static boolean FindExtension(const char *ext) {
         }
     }
     return false;
+}
+
+void GL_SetSwapInterval(void)
+{
+#ifdef _WIN32
+    typedef BOOL(APIENTRY* PFNWGLSWAPINTERVALPROC)(int);
+    PFNWGLSWAPINTERVALPROC wglSwapIntervalEXT = 0;
+    wglSwapIntervalEXT = (PFNWGLSWAPINTERVALPROC)wglGetProcAddress("wglSwapIntervalEXT");
+
+    if (v_vsync.value > 0 && wglSwapIntervalEXT)
+        wglSwapIntervalEXT(-1);
+#else
+    if (v_vsync.value > 0)
+        SDL_GL_SetSwapInterval(-1);
+#endif
 }
 
 //
@@ -418,8 +430,8 @@ void GL_Draw2DQuad(vtx_t *v, boolean stretch) {
     GL_SetOrtho(stretch);
 
     dglSetVertex(v);
-    RB_AddTriangle(0, 1, 2);
-    RB_AddTriangle(3, 2, 1);
+    dglTriangle(0, 1, 2);
+    dglTriangle(3, 2, 1);
     dglDrawGeometry(4, v);
 
     GL_ResetViewport();
@@ -546,61 +558,6 @@ static void CalcViewSize(void) {
 }
 
 //
-// GetVersionInt
-// Borrowed from prboom+
-//
-
-typedef enum {
-    OPENGL_VERSION_1_0,
-    OPENGL_VERSION_1_1,
-    OPENGL_VERSION_1_2,
-    OPENGL_VERSION_1_3,
-    OPENGL_VERSION_1_4,
-    OPENGL_VERSION_1_5,
-    OPENGL_VERSION_2_0,
-    OPENGL_VERSION_2_1,
-} glversion_t;
-
-static int GetVersionInt(const char* version) {
-    int MajorVersion;
-    int MinorVersion;
-    int versionvar;
-
-    versionvar = OPENGL_VERSION_1_0;
-
-    if(sscanf(version, "%d.%d", &MajorVersion, &MinorVersion) == 2) {
-        if(MajorVersion > 1) {
-            versionvar = OPENGL_VERSION_2_0;
-
-            if(MinorVersion > 0) {
-                versionvar = OPENGL_VERSION_2_1;
-            }
-        }
-        else {
-            versionvar = OPENGL_VERSION_1_0;
-
-            if(MinorVersion > 0) {
-                versionvar = OPENGL_VERSION_1_1;
-            }
-            if(MinorVersion > 1) {
-                versionvar = OPENGL_VERSION_1_2;
-            }
-            if(MinorVersion > 2) {
-                versionvar = OPENGL_VERSION_1_3;
-            }
-            if(MinorVersion > 3) {
-                versionvar = OPENGL_VERSION_1_4;
-            }
-            if(MinorVersion > 4) {
-                versionvar = OPENGL_VERSION_1_5;
-            }
-        }
-    }
-
-    return versionvar;
-}
-
-//
 // GL_Init
 //
 
@@ -622,6 +579,12 @@ void GL_Init(void) {
 
     CalcViewSize();
 
+    glEnable(GL_MULTISAMPLE);
+    glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+    glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
+    glEnable(GL_LINE_SMOOTH);
+    glEnable(GL_POLYGON_SMOOTH);
+
     dglViewport(0, 0, video_width, video_height);
     dglClearDepth(1.0f);
     dglDisable(GL_TEXTURE_2D);
@@ -639,6 +602,8 @@ void GL_Init(void) {
 
     GL_SetTextureFilter();
     GL_SetDefaultCombiner();
+
+    GL_SetSwapInterval();
 
     r_fillmode.value = 1.0f;
 
@@ -665,7 +630,7 @@ void GL_Init(void) {
     dglEnableClientState(GL_TEXTURE_COORD_ARRAY);
     dglEnableClientState(GL_COLOR_ARRAY);
 
-    DGL_CLAMP = (GetVersionInt(gl_version) >= OPENGL_VERSION_1_2 ? GL_CLAMP_TO_EDGE : GL_CLAMP);
+    DGL_CLAMP = gl_version ? GL_CLAMP_TO_EDGE : GL_CLAMP;
 
     glScaleFactor = 1.0f;
 
@@ -675,7 +640,6 @@ void GL_Init(void) {
 
     usingGL = true;
 
-    G_AddCommand("dumpglext", CMD_DumpGLExtensions, 0);
 
-	SDL_GL_SetSwapInterval((int)v_vsync.value);
+    G_AddCommand("dumpglext", CMD_DumpGLExtensions, 0);
 }

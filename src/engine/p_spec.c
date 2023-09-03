@@ -1338,6 +1338,7 @@ int P_DoSpecialLine(mobj_t* thing, line_t* line, int side) {
 		ok = 1;
 		break;
 
+		// Teleport (monsters ONLY!)
 	case 125:
 		if (!thing->player) {
 			ok = EV_Teleport(line, side, thing);
@@ -1620,6 +1621,39 @@ int P_DoSpecialLine(mobj_t* thing, line_t* line, int side) {
 	case 255:
 		//Spawn any projectile
 		ok = P_SpawnGenericMissile(line->tag, globalint, thing);
+		break;
+
+	// New EX+ stuff
+
+	// Ceiling Crush and Raise Slow - for an Indiana Jones style trap.
+	// Feature request from AtomicFrog.
+	case 26:
+		ok = EV_DoCeiling(line, crushSlowTrapOnce, CEILSPEEDSLOW);
+		break;
+
+	// Ceiling Lower to Floor Slow - No Crush
+	case 27:
+		ok = EV_DoCeiling(line, lowerToFloorSlow, CEILSPEEDSLOW);
+		break;
+
+	case 28:
+		// Lower Floor16Above (TURBO)
+		ok = EV_DoFloor(line, turboLower16Above, FLOORSPEED * 4);
+		break;
+
+	case 29:
+		// Lower Floor32Above (TURBO)
+		ok = EV_DoFloor(line, turboLower32Above, FLOORSPEED * 4);
+		break;
+
+	case 45:
+		// Lower Floor64Above (TURBO)
+		ok = EV_DoFloor(line, turboLower64Above, FLOORSPEED * 4);
+		break;
+
+	case 46:
+		// Lower Floor16Above (SLOW)
+		ok = EV_DoFloor(line, lower16AboveSlow, FLOORSPEED * 0.5);
 		break;
 
 	default:
