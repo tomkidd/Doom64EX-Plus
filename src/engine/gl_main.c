@@ -34,6 +34,7 @@
 #include <SDL2/SDL_opengl.h>
 #endif
 
+#include "i_sdlinput.h"
 #include "doomdef.h"
 #include "doomstat.h"
 #include "i_video.h"
@@ -45,7 +46,10 @@
 #include "con_console.h"
 #include "m_misc.h"
 #include "g_actions.h"
-#include "i_sdlinput.h"
+
+#ifndef _WIN32
+typedef int BOOL;
+#endif
 
 int ViewWindowX = 0;
 int ViewWindowY = 0;
