@@ -178,7 +178,7 @@ boolean P_GiveAmmo(player_t* player, ammotype_t ammo, int num) {
 // P_GiveWeapon
 // The weapon name may have a MF_DROPPED flag ored in.
 //
-boolean P_GiveWeapon(player_t* player, mobj_t* item, weapontype_t weapon, boolean dropped) {
+boolean P_GiveWeapon(player_t* player, mobj_t* item, weapontype_t weapon, int dropped) {
 	boolean gaveammo, gaveweapon;
 
 	if (netgame && (deathmatch != 2) && !dropped) {
@@ -207,28 +207,25 @@ boolean P_GiveWeapon(player_t* player, mobj_t* item, weapontype_t weapon, boolea
 	}
 
 	if (weaponinfo[weapon].ammo != am_noammo)
-	{
-		// give one clip with a dropped weapon,
-		// two clips with a found weapon
+	{	/* give one clip with a dropped weapon, two clips with a found weapon */
 		if (dropped)
 			gaveammo = P_GiveAmmo(player, weaponinfo[weapon].ammo, 1);
 		else
 			gaveammo = P_GiveAmmo(player, weaponinfo[weapon].ammo, 2);
 	}
-	else {
+	else
 		gaveammo = false;
-	}
 
-	if (player->weaponowned[weapon]) {
+	if (player->weaponowned[weapon])
 		gaveweapon = false;
-	}
-	else {
+	else
+	{
 		gaveweapon = true;
 		player->weaponowned[weapon] = true;
 		player->pendingweapon = weapon;
 	}
 
-	return (gaveweapon || gaveammo);
+	return gaveweapon || gaveammo;
 }
 
 //
@@ -367,10 +364,10 @@ boolean P_GivePower(player_t* player, int power) {
 // P_TouchSpecialThing
 //
 void P_TouchSpecialThing(mobj_t* special, mobj_t* toucher) {
-	player_t* player;
+	player_t*	player;
 	fixed_t     delta;
 	int         sound;
-	int            i = 0;
+	int         i = 0;
 
 	delta = special->z - toucher->z;
 
@@ -876,6 +873,9 @@ static void P_Obituary(mobj_t* source, mobj_t* target) {
 		case MT_SPIDER:
 			sprintf(omsg, "you stood in awe\nof the Spider Demon.");
 			break;
+		case MT_VILE:
+			sprintf(omsg, "you were incinerated\nby an Arch-Vile.");
+			break;
 		default:
 			sprintf(omsg, "you died.");
 			break;
@@ -980,6 +980,10 @@ void P_KillMobj(mobj_t* source, mobj_t* target) {
 
 	case MT_POSSESSED2:
 		item = MT_WEAP_SHOTGUN;
+		break;
+
+	case MT_CHAINGUY:
+		item = MT_WEAP_CHAINGUN;
 		break;
 
 	default:
@@ -1141,7 +1145,9 @@ void P_DamageMobj(mobj_t* target, mobj_t* inflictor, mobj_t* source, int damage)
 	}
 
 	target->reactiontime = 0;           // we're awake now...
-	if (!target->threshold && source && (source->flags & MF_SHOOTABLE)
+	if ((!target->threshold || target->type == MT_VILE)
+		&& source && (source->flags & MF_SHOOTABLE)
+		&& source->type != MT_VILE
 		&& !(target->flags & MF_NOINFIGHTING))
 	{
 		// if not intent on another player,

@@ -64,6 +64,7 @@ static float sky_cloudpan2 = 0;
 #define FIRESKY_WIDTH   64
 #define FIRESKY_HEIGHT  64
 
+CVAR_EXTERNAL(r_texturecombiner);
 CVAR_EXTERNAL(r_skybox);
 
 #define SKYVIEWPOS(angle, amount, x) x = -(angle / (float)ANG90 * amount); while(x < 1.0f) x += 1.0f
@@ -240,8 +241,8 @@ static void R_DrawSkyDome(int tiles, float rows, int height,
 		lx = x;
 		ly = y;
 
-		dglTriangle(0 + count, 1 + count, 2 + count);
-		dglTriangle(3 + count, 0 + count, 2 + count);
+		RB_AddTriangle(0 + count, 1 + count, 2 + count);
+		RB_AddTriangle(3 + count, 0 + count, 2 + count);
 		count += 4;
 
 		tu1 += tu2;
@@ -320,8 +321,8 @@ static void R_DrawSkyboxCloud(void) {
 
 	dglSetVertexColor(&v[0], sky->skycolor[0], 4);
 
-	dglTriangle(0, 1, 3);
-	dglTriangle(2, 3, 1);
+	RB_AddTriangle(0, 1, 3);
+	RB_AddTriangle(2, 3, 1);
 	dglDrawGeometry(4, v);
 
 	//
@@ -345,8 +346,8 @@ static void R_DrawSkyboxCloud(void) {
 	dglSetVertexColor(&v[2], sky->skycolor[0], 1);
 	dglSetVertexColor(&v[3], sky->skycolor[1], 1);
 
-	dglTriangle(0, 1, 2);
-	dglTriangle(3, 0, 2);
+	RB_AddTriangle(0, 1, 2);
+	RB_AddTriangle(3, 0, 2);
 	dglDrawGeometry(4, v);
 	dglEnable(GL_TEXTURE_2D);
 	dglPopMatrix();
@@ -393,8 +394,8 @@ static void R_DrawSkyboxCloud(void) {
 	SKYBOX_SETALPHA(color, 0x3f);
 	dglSetVertexColor(&v[0], color, 4);
 
-	dglTriangle(0, 1, 3);
-	dglTriangle(2, 3, 1);
+	RB_AddTriangle(0, 1, 3);
+	RB_AddTriangle(2, 3, 1);
 	dglDrawGeometry(4, v);
 
 	//
@@ -413,8 +414,8 @@ static void R_DrawSkyboxCloud(void) {
 	v[3].tv = 32 + sky_cloudpan2;
 	v[0].z = v[1].z = v[2].z = v[3].z = 1024;
 
-	dglTriangle(0, 1, 3);
-	dglTriangle(2, 3, 1);
+	RB_AddTriangle(0, 1, 3);
+	RB_AddTriangle(2, 3, 1);
 	dglDrawGeometry(4, v);
 
 	//
@@ -424,8 +425,8 @@ static void R_DrawSkyboxCloud(void) {
 	glDisable(GL_TEXTURE_2D);
 	SKYBOX_SETALPHA(color, 0x1f);
 	dglSetVertexColor(&v[0], color, 4);
-	dglTriangle(0, 1, 3);
-	dglTriangle(2, 3, 1);
+	RB_AddTriangle(0, 1, 3);
+	RB_AddTriangle(2, 3, 1);
 	dglDrawGeometry(4, v);
 	glEnable(GL_TEXTURE_2D);
 
@@ -494,64 +495,83 @@ static void R_DrawTitleSky(void) {
 //
 
 static void R_DrawClouds(void) {
-	rfloat pos = 0.0f;
-	vtx_t v[4];
+    rfloat pos = 0.0f;
+    vtx_t v[4];
 
-	GL_SetTextureUnit(0, true);
-	GL_BindGfxTexture(lumpinfo[skypicnum].name, false);
+    GL_SetTextureUnit(0, true);
+    GL_BindGfxTexture(lumpinfo[skypicnum].name, false);
 
-	pos = (TRUEANGLES(viewangle) / 360.0f) * 2.0f;
+    pos = (TRUEANGLES(viewangle) / 360.0f) * 2.0f;
 
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+    dglTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+    dglTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
-	dglSetVertex(v);
+    dglSetVertex(v);
 
-	GL_Set2DQuad(v, 0, 0, SCREENWIDTH, 120, 0, 0, 0, 0, 0);
-	dglSetVertexColor(&v[0], sky->skycolor[0], 2);
-	dglSetVertexColor(&v[2], sky->skycolor[1], 2);
+    if(r_texturecombiner.value > 0 && gl_max_texture_units > 2) {
+        dglSetVertexColor(&v[0], sky->skycolor[0], 2);
+        dglSetVertexColor(&v[2], sky->skycolor[1], 2);
 
-	glDisable(GL_TEXTURE_2D);
+        GL_UpdateEnvTexture(WHITE);
 
-	GL_Draw2DQuad(v, true);
+        // pass 1: texture * skycolor
+        dglTexCombColor(GL_TEXTURE, sky->skycolor[2], GL_MODULATE);
 
-	glEnable(GL_TEXTURE_2D);
+        // pass 2: result * const (though the original game uses the texture's alpha)
+        GL_SetTextureUnit(1, true);
+        dglTexCombColor(GL_PREVIOUS, 0xFF909090, GL_MODULATE);
 
-	GL_SetTextureUnit(1, true);
-	GL_SetTextureMode(GL_ADD);
-	GL_UpdateEnvTexture(sky->skycolor[1]);
-	GL_SetTextureUnit(0, true);
+        // pass 3: result + fragment color
+        GL_SetTextureUnit(2, true);
+        dglTexCombAdd(GL_PREVIOUS, GL_PRIMARY_COLOR);
+    }
+    else {
+        GL_Set2DQuad(v, 0, 0, SCREENWIDTH, 120, 0, 0, 0, 0, 0);
+        dglSetVertexColor(&v[0], sky->skycolor[0], 2);
+        dglSetVertexColor(&v[2], sky->skycolor[1], 2);
 
-	dglSetVertexColor(&v[0], sky->skycolor[2], 4);
-	v[0].a = v[1].a = v[2].a = v[3].a = 0x60;
+        dglDisable(GL_TEXTURE_2D);
 
-	v[3].x = v[1].x = 1.1025f;
-	v[0].x = v[2].x = -1.1025f;
-	v[2].y = v[3].y = 0;
-	v[0].y = v[1].y = 0.4315f;
-	v[0].z = v[1].z = 0;
-	v[2].z = v[3].z = -1.0f;
-	v[0].tu = v[2].tu = F2D3D(CloudOffsetX) - pos;
-	v[1].tu = v[3].tu = (F2D3D(CloudOffsetX) + 1.5f) - pos;
-	v[0].tv = v[1].tv = F2D3D(CloudOffsetY);
-	v[2].tv = v[3].tv = F2D3D(CloudOffsetY) + 2.0f;
+        GL_Draw2DQuad(v, true);
 
-	GL_SetOrthoScale(1.0f); // force ortho mode to be set
+        dglEnable(GL_TEXTURE_2D);
 
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	dglViewFrustum(SCREENWIDTH, SCREENHEIGHT, 45.0f, 0.1f);
-	glMatrixMode(GL_MODELVIEW);
-	glEnable(GL_ALPHA);
-	glPushMatrix();
-	glTranslated(0.0f, 0.0f, -1.0f);
-	dglTriangle(0, 1, 2);
-	dglTriangle(3, 2, 1);
-	dglDrawGeometry(4, v);
-	glPopMatrix();
-	glDisable(GL_ALPHA);
+        GL_SetTextureUnit(1, true);
+        GL_SetTextureMode(GL_ADD);
+        GL_UpdateEnvTexture(sky->skycolor[1]);
+        GL_SetTextureUnit(0, true);
 
-	GL_SetDefaultCombiner();
+        dglSetVertexColor(&v[0], sky->skycolor[2], 4);
+        v[0].a = v[1].a = v[2].a = v[3].a = 0x60;
+    }
+
+    v[3].x = v[1].x = 1.1025f;
+    v[0].x = v[2].x = -1.1025f;
+    v[2].y = v[3].y = 0;
+    v[0].y = v[1].y = 0.4315f;
+    v[0].z = v[1].z = 0;
+    v[2].z = v[3].z = -1.0f;
+    v[0].tu = v[2].tu = F2D3D(CloudOffsetX) - pos;
+    v[1].tu = v[3].tu = (F2D3D(CloudOffsetX) + 1.5f) - pos;
+    v[0].tv = v[1].tv = F2D3D(CloudOffsetY);
+    v[2].tv = v[3].tv = F2D3D(CloudOffsetY) + 2.0f;
+
+    GL_SetOrthoScale(1.0f); // force ortho mode to be set
+
+    dglMatrixMode(GL_PROJECTION);
+    dglLoadIdentity();
+    dglViewFrustum(SCREENWIDTH, SCREENHEIGHT, 45.0f, 0.1f);
+    dglMatrixMode(GL_MODELVIEW);
+    dglEnable(GL_BLEND);
+    dglPushMatrix();
+    dglTranslated(0.0f, 0.0f, -1.0f);
+    RB_AddTriangle(0, 1, 2);
+    RB_AddTriangle(3, 2, 1);
+    dglDrawGeometry(4, v);
+    dglPopMatrix();
+    dglDisable(GL_BLEND);
+
+    GL_SetDefaultCombiner();
 }
 
 //

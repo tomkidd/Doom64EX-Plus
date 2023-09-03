@@ -70,6 +70,7 @@ CVAR(st_hud_color, 0);
 CVAR_EXTERNAL(p_usecontext);
 CVAR_EXTERNAL(p_damageindicator);
 CVAR_EXTERNAL(v_accessibility);
+CVAR_EXTERNAL(r_texturecombiner);
 
 //
 // STATUS BAR DATA
@@ -283,7 +284,7 @@ static void ST_DrawDamageMarkers(void) {
 		dglTranslatef(0, 16, 0);
 		dglDisable(GL_TEXTURE_2D);
 		dglSetVertex(v);
-		dglTriangle(0, 1, 2);
+		RB_AddTriangle(0, 1, 2);
 		dglDrawGeometry(3, v);
 		dglEnable(GL_TEXTURE_2D);
 		dglPopMatrix();
@@ -494,8 +495,8 @@ void ST_FlashingScreen(byte r, byte g, byte b, byte a) {
 static void ST_DrawStatusItem(const float xy[4][2], const float uv[4][2], rcolor color) {
 	int i;
 
-	dglTriangle(st_vtxcount + 0, st_vtxcount + 1, st_vtxcount + 2);
-	dglTriangle(st_vtxcount + 0, st_vtxcount + 2, st_vtxcount + 3);
+	RB_AddTriangle(st_vtxcount + 0, st_vtxcount + 1, st_vtxcount + 2);
+	RB_AddTriangle(st_vtxcount + 0, st_vtxcount + 2, st_vtxcount + 3);
 
 	dglSetVertexColor(st_vtx + st_vtxcount, color, 4);
 
@@ -742,11 +743,11 @@ void ST_Drawer(void) {
 	// flash overlay
 	//
 
-	if ((st_flashoverlay.value ||
-		gl_max_texture_units <= 2 ||
-		flashcolor)) {
-		ST_FlashingScreen(st_flash_r, st_flash_g, st_flash_b, st_flash_a);
-	}
+    if((st_flashoverlay.value ||
+            gl_max_texture_units <= 2 ||
+            r_texturecombiner.value <= 0) && flashcolor) {
+        ST_FlashingScreen(st_flash_r, st_flash_g, st_flash_b, st_flash_a);
+    }
 
 	if (iwadDemo) {
 		return;
@@ -1152,7 +1153,7 @@ void ST_AddChatMsg(char* msg, int player) {
 
 	sprintf(str, "%s: %s", player_names[player], msg);
 	dmemset(stchat[st_chatcount].msg, 0, MAXCHATSIZE);
-	memcpy(stchat[st_chatcount].msg, str, dstrlen(str));
+	dmemcpy(stchat[st_chatcount].msg, str, dstrlen(str));
 	stchat[st_chatcount].tics = MAXCHATTIME;
 	stchat[st_chatcount].color = st_chatcolors[player];
 	st_chatcount = (st_chatcount + 1) % MAXCHATNODES;

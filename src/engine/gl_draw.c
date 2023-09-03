@@ -133,12 +133,20 @@ int Draw_Text(int x, int y, rcolor color, float scale,
 	char msg[MAX_MESSAGE_SIZE];
 	va_list    va;
 	const int ix = x;
+	boolean fill = false;
 
 	va_start(va, string);
 	vsprintf(msg, string, va);
 	va_end(va);
 
 	GL_SetState(GLSTATE_BLEND, 1);
+
+	if(!r_fillmode.value) {
+        dglEnable(GL_TEXTURE_2D);
+        dglPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+        r_fillmode.value = 1.0f;
+        fill = true;
+    }
 
 	GL_BindGfxTexture("SFONT", true);
 
@@ -198,8 +206,8 @@ int Draw_Text(int x, int y, rcolor color, float scale,
 
 			dglSetVertexColor(vtxstring + vi, color, 4);
 
-			dglTriangle(vi + 0, vi + 1, vi + 2);
-			dglTriangle(vi + 0, vi + 2, vi + 3);
+			RB_AddTriangle(vi + 0, vi + 1, vi + 2);
+			RB_AddTriangle(vi + 0, vi + 2, vi + 3);
 
 			if (devparm) {
 				vertCount += 4;
@@ -213,6 +221,12 @@ int Draw_Text(int x, int y, rcolor color, float scale,
 	}
 
 	GL_ResetViewport();
+
+	if(fill) {
+        dglDisable(GL_TEXTURE_2D);
+        dglPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        r_fillmode.value = 0.0f;
+    }
 
 	GL_SetState(GLSTATE_BLEND, 0);
 	GL_SetOrthoScale(1.0f);
@@ -536,8 +550,8 @@ int Draw_BigText(int x, int y, rcolor color, const char* string) {
 
 			dglSetVertexColor(vtxstring + vi, color, 4);
 
-			dglTriangle(vi + 2, vi + 1, vi + 0);
-			dglTriangle(vi + 3, vi + 2, vi + 0);
+			RB_AddTriangle(vi + 2, vi + 1, vi + 0);
+			RB_AddTriangle(vi + 3, vi + 2, vi + 0);
 
 			if (devparm) {
 				vertCount += 4;
@@ -956,8 +970,8 @@ float Draw_ConsoleText(float x, float y, rcolor color,
 
 			dglSetVertexColor(vtxstring + vi, color, 4);
 
-			dglTriangle(vi + 2, vi + 1, vi + 0);
-			dglTriangle(vi + 3, vi + 2, vi + 0);
+			RB_AddTriangle(vi + 2, vi + 1, vi + 0);
+			RB_AddTriangle(vi + 3, vi + 2, vi + 0);
 
 			if (devparm) {
 				vertCount += 4;
