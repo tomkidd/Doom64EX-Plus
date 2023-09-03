@@ -500,13 +500,13 @@ static void CalcViewSize(void) {
 //
 void GL_Init(void) {
 
-	gl_vendor = dglGetString(GL_VENDOR);
+	gl_vendor = glGetString(GL_VENDOR);
 	I_Printf("GL_VENDOR: %s\n", gl_vendor);
-	gl_version = dglGetString(GL_VERSION);
+	gl_version = glGetString(GL_VERSION);
 	I_Printf("GL_VERSION: %s\n", gl_version);
-	dglGetIntegerv(GL_MAX_TEXTURE_SIZE, &gl_max_texture_size);
+	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &gl_max_texture_size);
 	I_Printf("GL_MAX_TEXTURE_SIZE: %i\n", gl_max_texture_size);
-	dglGetIntegerv(GL_MAX_TEXTURE_UNITS_ARB, &gl_max_texture_units);
+	glGetIntegerv(GL_MAX_TEXTURE_UNITS_ARB, &gl_max_texture_units);
 	I_Printf("GL_MAX_TEXTURE_UNITS_ARB: %i\n", gl_max_texture_units);
 
 	if (gl_max_texture_units <= 2) {
@@ -544,11 +544,7 @@ void GL_Init(void) {
 	dglEnableClientState(GL_TEXTURE_COORD_ARRAY);
 	dglEnableClientState(GL_COLOR_ARRAY);
 
-#if defined __arm__ || defined __aarch64__ || defined __APPLE__ || defined __LEGACYGL__
-	DGL_CLAMP = GL_VERSION_2_1 ? GL_CLAMP_TO_EDGE : GL_CLAMP;
-#else
-	DGL_CLAMP = GL_VERSION_3_1 ? GL_CLAMP_TO_EDGE : GL_CLAMP;
-#endif
+	DGL_CLAMP = gl_version ? GL_CLAMP_TO_EDGE : GL_CLAMP;
 
 	glScaleFactor = 1.0f;
 
@@ -560,5 +556,5 @@ void GL_Init(void) {
 
 	G_AddCommand("dumpglext", CMD_DumpGLExtensions, 0);
 
-	SDL_GL_SetSwapInterval(v_vsync.value);
+	SDL_GL_SetSwapInterval((int)v_vsync.value);
 }
