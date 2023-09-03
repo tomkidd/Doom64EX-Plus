@@ -261,6 +261,7 @@ void T_Glow(glow_t* g) {
 
 		if (g->sector->special != g->special)
 		{
+			g->sector->lightlevel = 0;
 			P_RemoveThinker(&g->thinker);
 			return;
 		}
@@ -597,7 +598,7 @@ void P_UpdateLightThinker(light_t* destlight, light_t* srclight) {
 // P_DoSectorLightChange
 //
 
-int P_DoSectorLightChange(line_t* line, int16_t tag) {
+int P_DoSectorLightChange(line_t* line, short tag) {
 	int j = 0;
 	int ptr1 = 0;
 	int ptr2 = 0;

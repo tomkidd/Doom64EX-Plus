@@ -1160,19 +1160,14 @@ typedef enum {
 	S_SPID_DIE4,
 	S_SPID_DIE5,
 	S_SPID_DIE6,
-	S_SPID_DIE7,
-	S_SPID_DIE8,
-	S_SPID_DIE9,
-	S_SPID_DIE10,
-	S_SPID_DIE11,
 	NUMSTATES
 } statenum_t;
 
 typedef struct
 {
 	spritenum_t sprite;
-	long		info_frame;
-	long		info_tics;
+	int			info_frame;
+	int			info_tics;
 	actionf_t	action;
 	statenum_t	nextstate;
 	int			misc1;
@@ -1386,7 +1381,7 @@ typedef struct {
 } mobjinfo_t;
 
 extern state_t states[NUMSTATES];
-extern int8_t* sprnames[NUMSPRITES + 1];
+extern char* sprnames[NUMSPRITES + 1];
 
 extern mobjinfo_t mobjinfo[NUMMOBJTYPES];
 
