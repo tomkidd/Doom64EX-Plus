@@ -13,7 +13,6 @@
 		2A1E0884293263D200FB6EB8 /* libSDL2-2.0.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2A1E0881293263D200FB6EB8 /* libSDL2-2.0.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		2A1E0885293263D200FB6EB8 /* libSDL2_net-2.0.0.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2A1E0882293263D200FB6EB8 /* libSDL2_net-2.0.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		2A1E0886293263D200FB6EB8 /* libpng16.16.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2A1E0883293263D200FB6EB8 /* libpng16.16.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		2A1E08912932869900FB6EB8 /* libfluidlite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A1E087F293263BF00FB6EB8 /* libfluidlite.a */; };
 		2A44CD3E2930B13E005B23CA /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A44CD3D2930B13E005B23CA /* CoreAudio.framework */; };
 		2A44CD402930B145005B23CA /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A44CD3F2930B145005B23CA /* OpenGL.framework */; };
 		2A44CE282930B570005B23CA /* doom64ex-plus.wad in Resources */ = {isa = PBXBuildFile; fileRef = 2A44CE212930B56F005B23CA /* doom64ex-plus.wad */; };
@@ -118,6 +117,8 @@
 		2AB7DECB293B9E2E009A3CA3 /* libz.1.2.13.dylib in CopyFiles */ = {isa = PBXBuildFile; fileRef = 2AB7DECA293B9E2E009A3CA3 /* libz.1.2.13.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		2AB7DECE293BD848009A3CA3 /* i_sdlinput.c in Sources */ = {isa = PBXBuildFile; fileRef = 2AB7DECD293BD825009A3CA3 /* i_sdlinput.c */; };
 		A19E98AD2AA527120063AFAD /* dgl.c in Sources */ = {isa = PBXBuildFile; fileRef = A19E98AB2AA527120063AFAD /* dgl.c */; };
+		A19E98AF2AA543580063AFAD /* libfluidsynth.3.2.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A19E98AE2AA543580063AFAD /* libfluidsynth.3.2.1.dylib */; };
+		A19E98B02AA543580063AFAD /* libfluidsynth.3.2.1.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = A19E98AE2AA543580063AFAD /* libfluidsynth.3.2.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		A1A8CE612AA13362007C3BB6 /* gl_shader.c in Sources */ = {isa = PBXBuildFile; fileRef = A1FC08222A9E5A4D00EC8372 /* gl_shader.c */; };
 		A1A8CE642AA135AB007C3BB6 /* net_structure.c in Sources */ = {isa = PBXBuildFile; fileRef = A1A8CE622AA135AB007C3BB6 /* net_structure.c */; };
 		A1FC08112A9D1D8200EC8372 /* deh_str.c in Sources */ = {isa = PBXBuildFile; fileRef = A1FC080F2A9D1D7300EC8372 /* deh_str.c */; };
@@ -136,6 +137,17 @@
 				2A1E0885293263D200FB6EB8 /* libSDL2_net-2.0.0.dylib in CopyFiles */,
 				2A1E0886293263D200FB6EB8 /* libpng16.16.dylib in CopyFiles */,
 			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A19E98B12AA543580063AFAD /* Embed Libraries */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 6;
+			files = (
+				A19E98B02AA543580063AFAD /* libfluidsynth.3.2.1.dylib in Embed Libraries */,
+			);
+			name = "Embed Libraries";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -363,6 +375,7 @@
 		2AB7DECD293BD825009A3CA3 /* i_sdlinput.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = i_sdlinput.c; path = ../src/engine/i_sdlinput.c; sourceTree = "<group>"; };
 		A19E98AB2AA527120063AFAD /* dgl.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = dgl.c; path = ../src/engine/dgl.c; sourceTree = "<group>"; };
 		A19E98AC2AA527120063AFAD /* dgl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = dgl.h; path = ../src/engine/dgl.h; sourceTree = "<group>"; };
+		A19E98AE2AA543580063AFAD /* libfluidsynth.3.2.1.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libfluidsynth.3.2.1.dylib; path = Libs/libfluidsynth.3.2.1.dylib; sourceTree = "<group>"; };
 		A1A8CE622AA135AB007C3BB6 /* net_structure.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = net_structure.c; path = ../src/engine/net_structure.c; sourceTree = "<group>"; };
 		A1A8CE632AA135AB007C3BB6 /* net_structure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = net_structure.h; path = ../src/engine/net_structure.h; sourceTree = "<group>"; };
 		A1FC080F2A9D1D7300EC8372 /* deh_str.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = deh_str.c; path = ../src/engine/deh_str.c; sourceTree = "<group>"; };
@@ -379,10 +392,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				2AB7DEC9293B9E1E009A3CA3 /* libz.1.2.13.dylib in Frameworks */,
-				2A1E08912932869900FB6EB8 /* libfluidlite.a in Frameworks */,
 				2A1E087C293263BF00FB6EB8 /* libpng16.16.dylib in Frameworks */,
 				2A1E087D293263BF00FB6EB8 /* libSDL2_net-2.0.0.dylib in Frameworks */,
 				2A1E087E293263BF00FB6EB8 /* libSDL2-2.0.0.dylib in Frameworks */,
+				A19E98AF2AA543580063AFAD /* libfluidsynth.3.2.1.dylib in Frameworks */,
 				2A44CD402930B145005B23CA /* OpenGL.framework in Frameworks */,
 				2A44CD3E2930B13E005B23CA /* CoreAudio.framework in Frameworks */,
 				AB5A81D31A8DAEB600AF539F /* Cocoa.framework in Frameworks */,
@@ -395,6 +408,7 @@
 		9F385F2F1C29BFA400BD4F2B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A19E98AE2AA543580063AFAD /* libfluidsynth.3.2.1.dylib */,
 				2A1E087F293263BF00FB6EB8 /* libfluidlite.a */,
 				2A1E0872293260A200FB6EB8 /* libpng16.16.dylib */,
 				2A1E0871293260A200FB6EB8 /* libSDL2_net-2.0.0.dylib */,
@@ -664,6 +678,7 @@
 				AB5A80BF1A8DABE100AF539F /* Frameworks */,
 				AB5A80C01A8DABE100AF539F /* Resources */,
 				9F385F311C29C02A00BD4F2B /* CopyFiles */,
+				A19E98B12AA543580063AFAD /* Embed Libraries */,
 				A1FC080E2A9ACC6B00EC8372 /* ShellScript */,
 			);
 			buildRules = (
@@ -741,7 +756,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "install_name_tool -change /opt/local/lib/libz.1.dylib @executable_path/libz.1.dylib ${BUILT_PRODUCTS_DIR}/DOOM64EXPlus.app/Contents/MacOS/DOOM64EXPlus\ninstall_name_tool -change /opt/local/lib/libpng16.16.dylib @executable_path/libpng16.16.dylib ${BUILT_PRODUCTS_DIR}/DOOM64EXPlus.app/Contents/MacOS/DOOM64EXPlus\ninstall_name_tool -change /opt/local/lib/libSDL2_net-2.0.0.dylib @executable_path/libSDL2_net-2.0.0.dylib ${BUILT_PRODUCTS_DIR}/DOOM64EXPlus.app/Contents/MacOS/DOOM64EXPlus\ninstall_name_tool -change /opt/local/lib/libSDL2-2.0.0.dylib @executable_path/libSDL2-2.0.0.dylib ${BUILT_PRODUCTS_DIR}/DOOM64EXPlus.app/Contents/MacOS/DOOM64EXPlus\n";
+			shellScript = "install_name_tool -change /opt/local/lib/libz.1.dylib @executable_path/libz.1.dylib ${BUILT_PRODUCTS_DIR}/DOOM64EXPlus.app/Contents/MacOS/DOOM64EXPlus\ninstall_name_tool -change /opt/local/lib/libpng16.16.dylib @executable_path/libpng16.16.dylib ${BUILT_PRODUCTS_DIR}/DOOM64EXPlus.app/Contents/MacOS/DOOM64EXPlus\ninstall_name_tool -change /opt/local/lib/libSDL2_net-2.0.0.dylib @executable_path/libSDL2_net-2.0.0.dylib ${BUILT_PRODUCTS_DIR}/DOOM64EXPlus.app/Contents/MacOS/DOOM64EXPlus\ninstall_name_tool -change /opt/local/lib/libSDL2-2.0.0.dylib @executable_path/libSDL2-2.0.0.dylib ${BUILT_PRODUCTS_DIR}/DOOM64EXPlus.app/Contents/MacOS/DOOM64EXPlus\ninstall_name_tool -change /opt/homebrew/opt/fluid-synth/lib/libfluidsynth.3.dylib @executable_path/libfluidsynth.3.2.1.dylib ${BUILT_PRODUCTS_DIR}/DOOM64EXPlus.app/Contents/MacOS/DOOM64EXPlus\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
