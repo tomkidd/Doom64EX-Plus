@@ -28,12 +28,14 @@
 #ifdef USE_STDINT 
 #include <stdint.h>
 #endif
-
+#ifdef _WIN32
 #include <fcntl.h>
-
-#ifndef _WIN32
+#include <io.h>
+#else
+#include <fcntl.h>
 #include <unistd.h>
 #endif
+
 #ifdef OLD_MSVC
 #define W32GetVersionEX(lpVersionInformation) GetVersionEx(lpVersionInformation)
 #else
