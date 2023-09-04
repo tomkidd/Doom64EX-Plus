@@ -755,7 +755,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "install_name_tool -change /opt/local/lib/libz.1.dylib @executable_path/libz.1.dylib ${BUILT_PRODUCTS_DIR}/DOOM64EXPlus.app/Contents/MacOS/DOOM64EXPlus\ninstall_name_tool -change /opt/local/lib/libpng16.16.dylib @executable_path/libpng16.16.dylib ${BUILT_PRODUCTS_DIR}/DOOM64EXPlus.app/Contents/MacOS/DOOM64EXPlus\ninstall_name_tool -change /opt/local/lib/libSDL2_net-2.0.0.dylib @executable_path/libSDL2_net-2.0.0.dylib ${BUILT_PRODUCTS_DIR}/DOOM64EXPlus.app/Contents/MacOS/DOOM64EXPlus\ninstall_name_tool -change /opt/local/lib/libSDL2-2.0.0.dylib @executable_path/libSDL2-2.0.0.dylib ${BUILT_PRODUCTS_DIR}/DOOM64EXPlus.app/Contents/MacOS/DOOM64EXPlus\ninstall_name_tool -change /opt/homebrew/opt/fluid-synth/lib/libfluidsynth.3.dylib    @executable_path/libfluidsynth.3.2.1.dylib ${BUILT_PRODUCTS_DIR}/DOOM64EXPlus.app/Contents/MacOS/DOOM64EXPlus\n";
+			shellScript = "install_name_tool -change /opt/local/lib/libz.1.dylib @executable_path/libz.1.dylib ${BUILT_PRODUCTS_DIR}/DOOM64EXPlus.app/Contents/MacOS/DOOM64EXPlus\ninstall_name_tool -change /opt/local/lib/libpng16.16.dylib @executable_path/libpng16.16.dylib ${BUILT_PRODUCTS_DIR}/DOOM64EXPlus.app/Contents/MacOS/DOOM64EXPlus\ninstall_name_tool -change /opt/local/lib/libSDL2_net-2.0.0.dylib @executable_path/libSDL2_net-2.0.0.dylib ${BUILT_PRODUCTS_DIR}/DOOM64EXPlus.app/Contents/MacOS/DOOM64EXPlus\ninstall_name_tool -change /opt/local/lib/libSDL2-2.0.0.dylib @executable_path/libSDL2-2.0.0.dylib ${BUILT_PRODUCTS_DIR}/DOOM64EXPlus.app/Contents/MacOS/DOOM64EXPlus\n#install_name_tool -change /opt/homebrew/opt/fluid-synth/lib/libfluidsynth.3.dylib    @executable_path/libfluidsynth.3.2.1.dylib ${BUILT_PRODUCTS_DIR}/DOOM64EXPlus.app/Contents/MacOS/DOOM64EXPlus\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1016,7 +1016,7 @@
 					./Libs,
 					"$(PROJECT_DIR)/Libs",
 				);
-				MARKETING_VERSION = 3.6.5.1;
+				MARKETING_VERSION = 3.6.5.8;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"-I",
@@ -1062,7 +1062,7 @@
 					./Libs,
 					"$(PROJECT_DIR)/Libs",
 				);
-				MARKETING_VERSION = 3.6.5.1;
+				MARKETING_VERSION = 3.6.5.8;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CFLAGS = (
 					"-I",
