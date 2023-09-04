@@ -36,10 +36,6 @@
 #include "con_console.h"
 #include "z_zone.h"
 
-#ifdef __APPLE__
-#include <ctype.h>
-#endif
-
 #ifdef _WIN32
 #include "i_xinput.h"
 #endif

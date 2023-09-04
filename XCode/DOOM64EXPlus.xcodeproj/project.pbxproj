@@ -119,7 +119,6 @@
 		A19E98AF2AA543580063AFAD /* libfluidsynth.3.2.1.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A19E98AE2AA543580063AFAD /* libfluidsynth.3.2.1.dylib */; };
 		A19E98B02AA543580063AFAD /* libfluidsynth.3.2.1.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = A19E98AE2AA543580063AFAD /* libfluidsynth.3.2.1.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		A19E98B42AA552790063AFAD /* i_mac_audio.c in Sources */ = {isa = PBXBuildFile; fileRef = A19E98B22AA552790063AFAD /* i_mac_audio.c */; };
-		A1A8CE612AA13362007C3BB6 /* gl_shader.c in Sources */ = {isa = PBXBuildFile; fileRef = A1FC08222A9E5A4D00EC8372 /* gl_shader.c */; };
 		A1A8CE642AA135AB007C3BB6 /* net_structure.c in Sources */ = {isa = PBXBuildFile; fileRef = A1A8CE622AA135AB007C3BB6 /* net_structure.c */; };
 		A1FC08112A9D1D8200EC8372 /* deh_str.c in Sources */ = {isa = PBXBuildFile; fileRef = A1FC080F2A9D1D7300EC8372 /* deh_str.c */; };
 		AB5A81D31A8DAEB600AF539F /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB5A81D21A8DAEB600AF539F /* Cocoa.framework */; };
@@ -382,8 +381,6 @@
 		A1A8CE632AA135AB007C3BB6 /* net_structure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = net_structure.h; path = ../src/engine/net_structure.h; sourceTree = "<group>"; };
 		A1FC080F2A9D1D7300EC8372 /* deh_str.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = deh_str.c; path = ../src/engine/deh_str.c; sourceTree = "<group>"; };
 		A1FC08102A9D1D7300EC8372 /* deh_str.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = deh_str.h; path = ../src/engine/deh_str.h; sourceTree = "<group>"; };
-		A1FC08212A9E5A4D00EC8372 /* gl_shader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = gl_shader.h; path = ../src/engine/gl_shader.h; sourceTree = "<group>"; };
-		A1FC08222A9E5A4D00EC8372 /* gl_shader.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; name = gl_shader.c; path = ../src/engine/gl_shader.c; sourceTree = "<group>"; };
 		AB5A80C21A8DABE100AF539F /* DOOM64EXPlus.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DOOM64EXPlus.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB5A81D21A8DAEB600AF539F /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -466,8 +463,6 @@
 				A19E98AC2AA527120063AFAD /* dgl.h */,
 				A1A8CE622AA135AB007C3BB6 /* net_structure.c */,
 				A1A8CE632AA135AB007C3BB6 /* net_structure.h */,
-				A1FC08222A9E5A4D00EC8372 /* gl_shader.c */,
-				A1FC08212A9E5A4D00EC8372 /* gl_shader.h */,
 				2AB7DECD293BD825009A3CA3 /* i_sdlinput.c */,
 				2AB7DECC293BD825009A3CA3 /* i_sdlinput.h */,
 				2AB7DECA293B9E2E009A3CA3 /* libz.1.2.13.dylib */,
@@ -781,7 +776,6 @@
 				2A44CF2B2930B717005B23CA /* i_video.c in Sources */,
 				2A44CF452930B717005B23CA /* gl_texture.c in Sources */,
 				2A44CF432930B717005B23CA /* p_sight.c in Sources */,
-				A1A8CE612AA13362007C3BB6 /* gl_shader.c in Sources */,
 				2A44CF4A2930B717005B23CA /* p_pspr.c in Sources */,
 				2A44CF0A2930B717005B23CA /* p_floor.c in Sources */,
 				2A44CF192930B717005B23CA /* deh_frame.c in Sources */,

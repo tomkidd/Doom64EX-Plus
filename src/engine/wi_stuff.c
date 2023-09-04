@@ -41,6 +41,7 @@
 #include "st_stuff.h"
 #include "r_wipe.h"
 #include "gl_draw.h"
+#include "m_misc.h"
 
 #define WIALPHARED      D_RGBA(0xC0, 0, 0, 0xFF)
 
@@ -290,7 +291,7 @@ int WI_Ticker(void) {
 		break;
 
 	case 4:
-		if (gamemap > 40 && nextmap > 40) {
+		if (gamemap > 80 && nextmap > 80) {
 			S_StartSound(NULL, sfx_explode);
 		}
 
@@ -323,11 +324,11 @@ void WI_Drawer(void) {
 
 	GL_ClearView(0xFF000000);
 
-	if (currentmap < 0) {
+	if (currentmap < 1) {
 		currentmap = 0;
 	}
 
-	if (currentmap > 40) {
+	if (currentmap > 80) {
 		currentmap = 33;
 	}
 
